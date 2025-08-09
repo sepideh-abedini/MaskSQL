@@ -15,5 +15,5 @@ out
 out_old
 __pycache__
 *.png
-*.json
+./*.json
 *.csv
