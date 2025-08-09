@@ -1,0 +1,18 @@
+[
+    {
+        "question_id": 183,
+        "db_id": "financial",
+        "question": "Show the name of female customers have a junior credit card?",
+        "query": "SELECT name FROM client WHERE gender = 'F' AND credit_type = 'junior'",
+        "tc_original": [
+            "client.name",
+            "client.gender",
+            "client.credit_type"
+        ],
+        "schema_links": {
+            "client.name": "name",
+            "client.gender": "female",
+            "client.credit_type": "junior"
+        }
+    }
+]

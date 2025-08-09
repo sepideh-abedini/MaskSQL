@@ -1,0 +1,599 @@
+Mapping: ['schools.*="school", "schools.cdscode"="school code", "schools.phone"="phone number", "satscores.*"="SAT score", "satscores.numge1500"="has the highest number of test takers with an SAT score of over 1500']
+Mapping: ['schools.*="schools with a total enrollment", frpm.*="enrollment (K-12)", frpm.*="enrollment (Ages 5-17)", frpm.cdscode="cdscode of the schools with a total enrollment over 500']
+
+As per the given schema, we selected the tables 'schools' and 'frpm' as the most relevant tables to the question. 'schools' is the most relevant table out of the two because items such as 'schools.*', 'schools.cdscode' directly relate to the question. 'frpm' is the second most relevant table because the items such as 'frpm.enrollment (k-12)', 'frpm.enrollment (ages 5-17)', and 'frpm.cdscode' also relate to the question. We might include other tables that are not used in the question as well.
+
+We then picked the top 5 columns within each table. In the SchemaItems list, first columns of the 'schools' and 'frpm' tables are listed. These columns are then sorted in descending order of relevance to the question.
+
+For instance, 'schools.school' and 'schools.cdscode' listed before 'frpm.enrollment (k-12)' because they are columns of 'schools' table. 'frpm.enrollment (k-12)' and 'frpm.enrollment (ages 5-17)' listed before 'frpm.cdscode' because they are more relevant to the question within the 'frpm' table. However, please note that 'frpm.cdscode' is still included in the mapping because it is a relevant column for providing the cdscode of the schools with a total enrollment over 500.
+
+As a reference, the SQL query for this question could be something like:
+
+"SELECT schools.cdscode, schools.school
+FROM schools
+JOIN frpm ON schools.cdscode = frpm.cdscode
+WHERE frpm.enrollment (k-12) + frpm.enrollment (ages 5-17) > 500"
+ Mapping: ['satscores.*="numGE1500", "satscores.*="NumTstTakr', 'schools.*="schools with the top 3"']
+ Mapping: ['frpm.*="free meals for K-12", "frpm.free meal count (k-12)"="more than 500 free meals", "frpm.free meal count (k-12)"="less than 700 free or reduced price meals"]
+ Mapping: ['satscores.*="average writing score", "schools.*="school managed by Ricci Ulrich']
+ Mapping: ['schools.*="schools with a mailing state address in California", "schools.county"="schools located in the county of", "schools.county"="schools located in the county of Colusa", "schools.county"="schools located in the county of Humboldt"]
+ Based on the provided NL question, SQL query, and database schema, the mapping is as follows:
+
+Mapping: ['schools.*="number of schools", "schools.charter"="non-chartered schools (Charter = 0)", "frpm.county name"="county of Los Angeles", "frpm.free meal count (k-12)"="total number of free meals for grades 1 through 12", "frpm.enrollment (k-12)"="enrollment for grades 1 through 12", "frpm.percent (%) eligible free (k-12)"="percent of eligible free meals for grades 1 through 12 that is less than 0.18%"]
+ Mapping: ['trans.*="840 USD transaction", "trans.date"="1998/10/14", "account.account_id"="account ID associated with the transaction"]
+ Mapping: ['loan.*="loan approved"', 'account.district_id="district Id of the branch"]
+ Mapping: ['district.*="number of accounts", "district.district_id"="Litomerice", "account.*"="open"']
+ Mapping: ['loan.*="loan amount", "percentage of loan", "condition"', 'account.*="total amount", "total(amount) & condition", "account_id"']
+ Output:
+Mapping: ['loan.*="loan ID '4990'", 'district.a3="district", 'district.a2="region"']
+ Mapping: ['district.*="districts", district.a2="A2 refers to districts", district.district_id="number of female account holders"', 'client.*="female account holders", client.gender="gender", client.district_id="number of female account holders"', 'account.*="number of female account holders", account.district_id="number of female account holders"']
+ Mapping: ['district.*="branch where the largest number of crimes were committed", "district.district_id"="district ID of the branch", "account.*"="accounts in the branch", "account.account_id"="number of accounts in the branch"]
+ SQL: `SELECT count(*) FROM accounts AS T1 JOIN loans AS T2 ON T1.account_id = T2.account_id WHERE T2.status IN ('C', 'D') AND T1.district_id = 1`
+
+Mapping: ['account.*="accounts"', 'account.district_id="Branch location 1"', 'loan.status="running contract"', 'loan.duration="contracts"']
+ Mapping: ['district.*="branch", "district.a15"="number of crimes", "client.*"="client", "client.gender"="male"']
+ Output:
+Mapping: ['card.*="high-level credit cards", "card.type"="gold type", "disp.*"="cards with the"']
+ Input:
+NL: "How many accounts are there in the district of 'Pisek'?"
+SQL: "SELECT count(*) FROM accounts AS A JOIN districts AS D ON A.district_id = D.district_id WHERE D.a2 = 'Pisek'"
+
+Mapping:
+['district.*="district of 'Pisek'", 'account.*="number of accounts"', 'account.district_id="accounts in district"']
+ Output:
+Mapping: ['account.*="accounts"', 'district.a2="district"', 'account.district_id="district"', 'disp.type="account type"', 'disp.account_id="account"', 'loan.account_id="account", "eligible for loans"']
+
+Here's the reasoning for the mapping:
+
+1. The most relevant table is 'account' as it contains the main entities we are looking for.
+2. The next most relevant table is 'district' as it is referenced in the question through column A2 which represents the district.
+3. The relevance of the 'disp' and 'loan' tables comes from their connection with the 'account' table via the 'account_id' foreign key.
+
+Since we only need to return accounts that are eligible for loans, we include the 'loan.account_id' n-gram only and not the rest of the columns from the 'loan' table.
+We also include the 'disp.type' n-gram as it helps determine the account type, which is a requirement for being eligible for loans.
+
+The columns are sorted according to their relevance within each table. In this case, for the 'account' table, the 'district_id' column is more relevant as it provides the district information needed, while the rest of the columns are less relevant for answering the question. For the 'district' table, we list all the columns except 'district.a3, a4, a5', which are less relevant to the question.
+
+Here's the SQL query that corresponds to this mapping:
+
+SQL: "SELECT account.* FROM account JOIN district ON account.district_id = district.district_id JOIN disp ON account.account_id = disp.account_id JOIN loan ON account.account_id = loan.account_id WHERE district.a2 = 'Tabor' AND disp.type = 'OWNER'"
+ Mapping: ['account.*="account", "account.district_id"="district Id"', 'order.*="order with the id 33333", "order.account_id"="account that placed the order"]
+ Mapping: ['client.*="client with id 3541"', 'district.a3="region"']
+ Based on the provided NL question, SQL query, and database schema, the mapping in the given format would be as follows:
+
+Mapping: ['account.district_id="accounts from Jesenik district"', 'district.district_id="Jesenik district"']
+
+In this example, we only considered the tables 'account' and 'district' as the most relevant tables to the question. We did not include any other tables because they are not directly related to the question.
+
+We picked 'account' and 'district' based on the question asking for the number of accounts from a specific district, which is Jesenik district.
+
+The 'account' table is directly related because it contains the district_id column that defines the district for each account. The 'district' table is also relevant because it contains information about the districts, including Jesenik district.
+
+The SchemaItems list includes the columns of both 'account' and 'district' tables, followed by the rest of the columns in the database schema. The columns are sorted in descending order of relevance to the question for each table, as follows:
+
+For the 'account' table:
+- account.district_id="accounts from Jesenik district"
+- account.account_id
+- account.date
+- account.frequency
+- account.*
+
+For the 'district' table:
+- district.district_id="Jesenik district"
+- district.a2
+- district.a3
+- district.a4
+- district.a5
+- district.*
+ Mapping: ['client.*="clients", "client.gender"="gender", "client.district_id"="district", "district.a11"="average salary", "client.birth_date"="birth_date"]
+ Mapping: ['disp.*="accounts have an owner disposition", "account.frequency"="frequency = 'POPLATEK PO OBRATU'", "disp.account_id"="accounts", "disp.disp_id"="issuance after transaction", "trans.*="transaction"]
+ Mapping: ['account.*="accounts"', 'account.date="after 1996"', 'district.district_id="Beroun"']
+ Based on the given NL question, SQL query, and DB schema, the mapping in the requested format is as follows:
+
+Mapping:
+['loan.*="loan accounts"', 'loan.duration="duration of 24 months"', 'loan.payments="pre-payment"', 'account.frequency="POPLATEK TYDNE"', 'loan.date="weekly issuance of statement"']
+
+In this example, we have a total of 5 tables in the database. However, we selected the tables 'loan', 'account', 'order', and 'card' as the most relevant tables to the question in order of the highest relevance to the question.
+
+The SchemaItems list includes columns from these tables. First, the columns of the 'loan', 'account', 'order', and 'card' tables are listed, followed by 'loan.*', 'account.*', 'order.*', and 'card.*'.
+
+As mentioned earlier, we pick the top 5 columns within each table but we included 6 columns for 'loan' and 'account' tables due to their higher relevance to the question.
+
+These columns are then sorted in descending order of relevance to the question for each table. For instance, "loan.*" listed before "loan.duration" not because it has more relevance probability but because it is a column of 'loan' table and all columns of 'loan' table are listed before 'account' table.
+
+Also, please note that "POPLATEK TYDNE" in the question references the 'account.frequency' table. The frequency in the question corresponds to 'account.frequency' in the SQL query as there is no clear noun in the question that corresponds to 'order' or 'card' tables. So, we marked "POPLATEK TYDNE" in the mapping as referring to 'account.frequency'. If there is a clear noun in the question that corresponds to 'order' or 'card' tables, the mapping should be updated accordingly.
+ Mapping: ['bond.*="TR004_8_9 bond atoms"', 'bond.bond_id="TR004_8_9"']
+ Output:
+Mapping: ['bond.*="bond between atoms"', 'connected.atom_id="TR004_8"', 'connected.atom_id2="TR004_20"']
+ Mapping: ['molecule.label="label"', 'atom.element="atoms with tin"', 'bond.bond_type="label"']
+ Mapping: ['molecule.*="molecule TR000"', 'molecule.label="toxicology"', 'atom.*="elements of the toxicology"', 'connected.*="bond between atoms"', 'bond.bond_type="top three elements"']
+ Mapping: ['connected.*="bond IDs", "connected.atom_id2"="atom ID 2", "connected.atom_id"="TR000_2"']
+ Mapping: ['molecule.*="top three molecules"', 'molecule.label="not carcinogenic"', 'bond.bond_type="single bond"', 'atom.element="two atoms"']
+ Output:
+Mapping: ['atom.*="atoms with the element", "atom.element"="iodine"', 'bond.*="bonds", "bond.bond_id"="average number of bonds"']
+ Mapping: ['atom.*="total atoms", atom.element="phosphorus", atom.element="bromine", bond.bond_type="#"']
+ Mapping: ['molecule.*="TR000, TR001, TR002", molecule.label="label"']
+ In this case, the most relevant table to the given NL question is 'molecule' and 'bond'. We shall include the top 4 tables and top 5 columns within each table.
+
+Output:
+Mapping: ['molecule.*="total carcinogenic molecules"', 'molecule.molecule_id="molecule id from TR000 to TR030"', 'bond.molecule_id="total carcinogenic molecules"', 'bond.bond_id="bond_id"']
+
+In the SchemaItems list, the first columns are 'molecule.*', followed by 'bond.*', 'atom.*', and the rest are the remaining tables.
+These columns are then sorted in descending order of relevance to the question for each table.
+
+Note that, columns are sorted for each table and not across the tables.
+For instance, "molecule.molecule_id" is listed before "bond.molecule_id" not because it has more relevance probability but because it is a column of 'molecule' table and all columns of 'molecule' table are listed before 'bond' table.
+So, 'atom.*' and 'connected.*' are included even though they don't have direct relevance to the question, but they are columns of relevant tables 'atom' and 'connected'.
+ Output:
+Mapping: ['molecule.*="molecule id", "molecule.label"="non carcinogenic", "atom.*"="element", "bond.*"="triple bond"]
+
+In this example, we have several tables in the database, but we selected the tables 'molecule', 'bond', and 'atom' as the most relevant tables to the question in order of the highest relevance to the question.
+
+So, we might include some tables that are not used in the question at all.
+
+Here, we have three tables in our SchemaItems list, first columns of the 'molecule', 'bond', and 'atom' followed by 'connected' and 'connected.'
+
+The first four items are columns of 'molecule'.
+These columns are then sorted in descending order of relevance to the question: "molecule.*"="molecule id", "molecule.label"="non carcinogenic"
+The third and fourth columns in the list, "atom.*"="element", and "bond.*"="triple bond", are the next most relevant columns.
+Note that, columns are sorted for each table and not across the tables.
+For instance, "molecule.molecule_id" listed before "bond.molecule_id" not because it has more relevance probability but because it is a column of 'molecule' table and
+all columns of 'molecule' table are listed before 'bond' table. Likewise, "bond.bond_type" is listed before "bond.bond_id" because it is a column of the 'bond' table.
+ Mapping: ['bond.*="atom IDs of triple bond"', 'atom.atom_id="first atom"', 'atom.atom_id2="second atom"', 'bond.bond_type="triple bond"', 'molecule.molecule_id="molecule"']
+ Mapping: ['bond.bond_id="bond ID TR000_1_2"', 'atom.element="toxicology elements"']
+ Mapping: ['molecule.molecule_id="bond ID TR001_10_11", bond.label="label for bond ID TR001_10_11", bond.bond_id="bond ID TR001_10_11", atom.molecule_id="bond ID TR001_10_11"]
+ Mapping: ['molecule.*="molecule labeled with carcinogenic compounds", "molecule.label"="+"]
+ Mapping: ['bond.*="bond type"', 'bond.bond_id="TR007_4_19"']
+ Mapping: ['atom.*="elements that comprise the atoms",' 'bond.bond_type="bond TR001_2_4"', 'atom.element="cl", "c", "h", "o", "s", "n", "p", "na", "br", "f", "i", "sn", "pb", "te", "ca"']
+
+In this example, we have a total of 7 tables in the database. However, we selected the table 'atom', 'bond', 'connected', and 'molecule' as the most relevant tables to the question in order of the highest relevance to the question. We always pick top 4 tables but in this example we only need the first three tables.
+So, we might include some tables that are not used in the question at all.
+The schema items list includes the columns of 'atom', 'bond', 'connected', and 'molecule' followed by the remaining tables.
+The first three items are columns of 'atom'. These columns are then sorted in descending order of relevance to the question as per the given n-grams that reference the schema items.
+For instance, "atom.element" is listed before "bond.bond_type" not because it has more relevance probability but because it is a column of 'atom' table and all columns of 'atom' table are listed before 'bond' table. Similarly, "atom.element" is listed first among 'atom's columns because 'cl', 'c', 'h', etc. are the elements mentioned in the question. The rest of the columns in the SchemaItems list are arranged in the same manner.
+ Mapping: ['molecule.*="molecules",', 'molecule.label="carcinogenic",', 'atom.element="cl"]
+ Mapping:
+['bond.*="elements in bond_id TR001_3_4", bond.bond_id="bond_id TR001_3_4", bond.bond_type="type of bond"', 'atom.*="elements contained in bond_id TR001_3_4", atom.atom_id="element id", atom.element="element name"']
+ Output:
+Mapping: ['atom.*="atom with ID", "atom.element=TR000_1", "molecule.*"="molecule"]
+ Mapping: ['molecule.*="non-carcinogenic molecules", "molecule.molecule_id"="more than 5 atoms"]
+ Mapping: ['atom.atom_id="TR004_7", molecule.molecule_id="element ID of TR004_7", molecule.label="is not carcinogenic", atom.element="Chlorine", atom.element="Carbon", atom.element="Hydrogen", atom.element="Oxygen", atom.element="Sulfur", atom.element="Nitrogen", atom.element="Phosphorus", atom.element="Sodium", atom.element="Bromine", atom.element="Fluorine", atom.element="Iodine", atom.element="Tin", atom.element="Lead", atom.element="Tellurium", atom.element="Calcium']
+ Mapping: ['molecule.*="carcinogenic molecule", "atom.element"="oxygen"']
+ Mapping: ['movies.*="movies released in 2021", "movies.movie_release_year"="2021", "movies.movie_popularity"="movie popularity", "movies.director_name"="Steven Spielberg"]
+ Output:
+Mapping: ['ratings.*="movie of the director"', 'movies.director_url="URL to the movie director page on Mubi"', 'ratings_users.user_id="user 2452551"', 'ratings.critic_likes="39 likes"]
+ Mapping: ['ratings.*="URL to the rating", "ratings.rating_url"="rating URL", "ratings.movie_id"="movie_id", "ratings_users.user_id"="user 22030372", "movies.*"="movie details"]
+ Mapping: ['ratings.*="URL to the rating", "ratings.user_id"="user 45579900", "ratings.movie_id"="movie 'The Vertical Ray of the Sun'", "ratings.critic_likes"="20 likes"]
+ Mapping:
+['movies.movie_title="movie list", movies.movie_url="Short and pretty damn sweet"', 'lists.list_title="Short and pretty damn sweet"', 'lists.list_url="location of the movie"', 'lists.list_id="movie list ID"', 'lists.user_id="user who created the list"']
+ Mapping: ['ratings.*="movie 'A Way of Life'", 'movies.movie_title="A Way of Life"', 'ratings.movie_id=movie_id']
+ Output:
+Mapping: ['ratings_users.user_trialist="user 39115684 was a trialist"', 'ratings.movie_id="movie 'A Way of Life'"', 'ratings_users.user_id="user 39115684"']
+ Mapping: ['movies.*="movie Tokyo Eyes", movies.director_name="director"']
+ Output:
+Mapping: ['lists.*="user with the most followers", "lists_users.list_id"="list's ID", "lists_users.user_id"="ID of the user"]
+ Mapping: ['ratings.*="user 94978", "movies.movie_title"="movies that user 94978 scored as 5"']
+ Mapping: ['movies.*="films", "movies.movie_release_year"="released in 2003", "ratings.movie_id"="films scored by user 2941"]
+ Mapping: ['lists.*="first list", "lists_users.user_avatar_image_url"="user_85981819's avatar"]
+ Mapping: ['movies.*="movie 39115684 has rated", "ratings.movie_id=movie", "ratings.user_id="user 39115684", "ratings.rating_timestamp_utc=rating date", "ratings.rating_score=rating score"]
+ Mapping: ['ratings_users.*="user 57756708", "movies.movie_title"="movie that was rated recently by user 57756708']
+ Mapping: ['employee.*="employees who were hired before year 1990"', 'employee.hire_date="year 1990"']
+ Mapping: ['employee.*="employee", "job level greater than 200"', 'jobs.*="job description"', 'employee.job_lvl="job level">200']
+ Mapping: ['stores.*="bookstores in Massachusetts", stores.state="Massachusetts", titles.type="business", titles.*="books on business", sales.*="ordered"]
+ Mapping: ['employee.*="level left", "employee.job_lvl", "jobs.max_lvl"]
+ Mapping: ['client.client_id="client", "full name"', 'callcenterlogs.server="MICHAL"', 'callcenterlogs.date received="2017-03-27"']
+ Output:
+Mapping: ['callcenterlogs.*="for how long did the complaint"', 'callcenterlogs.date received="2017/3/27"']
+ Mapping: ['callcenterlogs.*="complaint call", "callcenterlogs.date received"="2017/2/22", "callcenterlogs.rand client"="C00007127", "callcenterlogs.ser_time"="serve time"]
+ Mapping: ['client.*="Mr", client.last="Gunner Omer Fuller", client.client_id="client id of Mr Gunner Omer Fuller", events.sub-issue="detailed issue", events.complaint_id="complaint id of the issue"]
+
+As a reference, here's the database schema for the question:
+
+supports:
+  support_id: number
+  client_id:
+    foreign_key: clients.client_id
+    type: number
+  product_id:
+    foreign_key: products.product_id
+    type: number
+  district_id:
+    foreign_key: districts.district_id
+    type: number
+clients:
+  client_id: number
+  first: text
+  middle: text
+  last: text
+  sex: text
+  phone: text
+  email: text
+  address: text
+districts:
+  district_id: number
+  district_name: text
+events:
+  event_id: number
+  client_id:
+    foreign_key: clients.client_id
+    type: number
+  support_id:
+    foreign_key: supports.support_id
+    type: number
+  issue: text
+  sub-issue: text
+  complaint_id:
+    foreign_key: complaint_logs.complaint_id
+    type: number
+  date: datetime
+callcenterlogs:
+  callcenterlog_id: number
+  complaint_id:
+    foreign_key: complaint_logs.complaint_id
+    type: number
+  Rand_Client: text
+  call_id: number
+  priority: text
+  type: text
+reviews:
+  review_id: number
+  product_id:
+    foreign_key: products.product_id
+    type: number
+  district_id:
+    foreign_key: districts.district_id
+    type: number
+  date: datetime
+  stars: number
+  review: text
+products:
+  product_id: number
+  product_name: text
+  district_id:
+    foreign_key: districts.district_id
+    type: number
+  supplier_id:
+    foreign_key: suppliers.supplier_id
+    type: number
+
+The top 4 tables relevant to the NL question are 'clients', 'events', 'support', and 'callcenterlogs'. In the given SchemaItems list, first the columns of these 4 tables are listed followed by 'events.*', 'callcenterlogs.*', and 'reviews.*'. The first five items are columns of the 'clients' table. These columns are then sorted in descending order of relevance to the question. As before, columns are sorted for each table and not across the tables. 'client.last' and 'client.client_id' are included because they reference 'Gunner Omer Fuller' and the client id of Mr Gunner Omer Fuller respectively. 'events.sub-issue' is included because it corresponds to the 'detailed issue'. 'events.complaint_id' is included because it could be related to the id of the complaint involving Mr Gunner Omer Fuller.
+ Mapping: ['reviews.date="2016/10/7"', 'reviews.district_id="Indianapolis"', 'reviews.*="product received a review"', 'state.state="Indianapolis"']
+ Mapping: ['client.email="email id",' 'callcenterlogs.*="calls were hung" where outcome = "Hang"']
+ Mapping: ['client.sex="male clients"', 'district.state_abbrev="state of Massachusetts"]
+ Mapping: ['client.*="Norwalk clients"', 'client.age="average age"']
+ Mapping: ['events.*="products", "client.*="people who were born after", "events.product="products", "callcenterlogs.*="complain about"]
+In this case, we picked the tables 'events', 'client', 'reviews', and 'callcenterlogs' as the most relevant tables to the question in order of the highest relevance to the question.
+
+SchemaItems list:
+
+1. events:
+   - events.product="products"
+   - events.client_id="people who were born after"
+   - events.sub-product=""
+   - events.complaint_id=""
+   - events.issue="complain about"
+
+2. client:
+   - client.year="people who were born after 2005"
+   - client.client_id="people who were born after"
+   - client.phone=""
+   - client.sex=""
+   - client.*=""
+
+3. reviews:
+   - reviews.product=""
+   - reviews.date="2005"
+   - reviews.stars=""
+   - reviews.reviews=""
+   - reviews.district_id=""
+   - reviews.*=""
+
+4. callcenterlogs:
+   - callcenterlogs.complaint_id="complain about"
+   - callcenterlogs.rand_client="people who were born after"
+   - callcenterlogs.priority=""
+   - callcenterlogs.type=""
+   - callcenterlogs.outcome=""
+   - callcenterlogs.*=""
+ Mapping: ['callcenterlogs.*="longest server time"', 'callcenterlogs.rand client="client with the longest server time"]
+ Mapping: ['client.*="clients with full names", "client.first", "client.middle", "client.last", "client.age=""Older American"']
+ Mapping: ['client.email="email of client",' 'callcenterlogs.type="complaint type PS"']
+ Mapping: ['client.client_id="complaint id of client"', 'client.year="1931"']
+ Mapping:
+['client.*="clients whose first name start with alphabet B", "client.client_id"="call id"']
+ Mapping: ['callcenterlogs.*="average age", "callcenterlogs.type"="complaint type TT", "client.client_id"="ID of clients"]
+ Mapping: ['callcenterlogs.*="complaint ID, call ID, and final phone number"', 'callcenterlogs.date received="Date received between '2014-01-01' and '2014-12-30'"', 'callcenterlogs.phonefinal="final phone number"', 'callcenterlogs.complaint id="complaint ID"', 'callcenterlogs.call_id="call ID"']
+ Mapping: ['client.*="youngest client", "client.city"="Indianapolis", "client.year"="year", "client.month"="month", "client.day"="day", "client.email"="email", "client.phone"="phone number"']
+ Mapping: ['client.age="oldest age"', 'client.sex="male"']
+
+In this example, we have a total of 7 tables in the database. However, we selected the table 'client' as the most relevant table to the question. We only need the top table.
+So, we might include some tables that are not used in the question at all.
+
+We picked the top 5 columns within the 'client' table: 'client.age', 'client.sex', 'client.middle', 'client.day', 'client.month'. These columns are then sorted in descending order of relevance to the question (even though in this case they are all relevant to the question).
+
+Columns are sorted for each table and not across the tables. For instance, "client.age" is listed before "client.sex", not because it has more relevance probability but because it is a column of the 'client' table and all columns of the 'client' table are listed first.
+
+In the SchemaItems list, first the columns of the 'client' table followed by the remaining tables ('callcenterlogs', 'reviews', 'state').
+ Mapping: ['district.*="clients in South Atlantic"', 'district.division="South Atlantic"', 'client.*="average age"', 'client.age="age"']
+ Mapping: ['state.*="state has the most cities"', 'district.*="number of cities"']
+
+In this example, the question is asking for the state with the most number of cities. In order to answer this question, we would need data from the 'state' table as it contains the state information and the 'district' table as it contains the city information.
+
+We will sort the tables in descending order of relevance to the question; the 'state' and 'district' tables are the most relevant. We will also sort the columns within each table in descending order of relevance to the question.
+
+Here's how the sorted SchemaItems list would look:
+
+1. state.state - state name
+2. state.statecode - state code
+3. state.region - region of the state
+4. state.* - other state data (not directly relevant to the question, but could contain useful information)
+5. district.* - district data that includes city information (not directly relevant to the question, but required to get the city count)
+6. district.city - city names
+7. district.district_id - district ID (not directly relevant to the question, but could be used for SQL query optimization)
+8. district.division - division of the district (not directly relevant to the question, but provides additional context)
+
+Now, we can map the most relevant n-grams in the question to their corresponding schema items:
+
+* state.*="state has the most cities" - This n-gram references all tables that contain 'state' data, and in this case, the information that contains 'state' data is directly related to the question.
+* district.*="number of cities" - Although not explicitly mentioned in the question, we can infer that the question asks for the number of cities, so the column or table containing city data becomes relevant. Therefore, this n-gram refers to all columns in the 'district' table (including city, district_id, etc.), as all these columns could potentially contribute to getting the required city count.
+ Mapping: ['events.*="products involved"', 'events.date received="March 2017 via TOVA server"']
+ Mapping: ['movie.*="movie Four Rooms"', 'production_company.*="production company of the movie Four Rooms"', 'movie_company.company_id="movie_id of Four Rooms"']
+ Mapping: ['movie_crew.*="crew members"', 'person.*="crew members names"', 'movie_crew.movie_id="movie Pirates of the Caribbean: At World''s End"']
+ Output:
+Mapping: ['movie_crew.*="movie in which Dariusz Wolski works"', 'movie.*="movie"', 'movie_crew.job="Director of Photography"', 'movie.movie_id="among the movie"', 'movie_crew.department_id="movie"', 'movie.vote_average="vote average"', 'movie.vote_count="vote count"', 'movie.title="movie title"', 'movie.*="movie"']
+
+In this example, in addition to the NL question and ranked schema items, we also included the database schema and the SQL query to help you better understand the task.
+We selected the tables 'movie' and 'movie_crew' as the most relevant tables to the question in order of the highest relevance to the question.
+We picked the top 4 tables but in this example we only need the first two tables.
+So, we might include some tables that are not used in the question at all.
+In the SchemaItems list, first columns of the 'movie' and 'movie_crew' tables are listed. These columns are then sorted in descending order of relevance to the question too.
+Note that, columns are sorted for each table and not across the tables.
+For instance, "movie_crew.movie_id" listed before "movie_crew.job" not because it has more relevance probability but because it is a column of 'movie_crew' table and all columns of 'movie_crew' table are listed before 'movie' table.
+
+In the given example, 'movie_crew' table stores information about the crew members for each movie.
+The 'job' column indicates the job held by the crew member, and the 'Department_id' column indicates the department the job belongs to.
+The 'person_id' column uniquely identifies the crew member, and the 'movie_id' column represents the ID of the movie for which the crew member works.
+The 'movie' table stores information about each movie, including its title, vote average, vote count, and budget.
+The SQL query given is using the 'voting' and 'tmdb' databases, and it filters the movies for which the Director of Photography (job = 'Director of Photography') is Dariusz Wolski (person_id), and it calculates the percentage of those movies for which the vote average (vote_average) is over 5.0.
+ Mapping: ['movie_crew.movie_id="movie 'Land of the Dead'", "movie_crew.job"="Director", "movie_crew.person_id"="who is", "movie.title"="the movie"]
+ Mapping: ['movie_keywords.keyword_name="most used keyword"', 'keyword.keyword_name="keyword_name"']
+ Mapping: ['movie.title="movie 'Crazy Heart'", 'movie_company.company_name="production company"']
+ Mapping: ['movie.title="title of the first crime movie ever released"', 'genre.genre_name="genre Crime"']
+ Mapping: ['movie_crew.*="Movie No. 12"', 'movie_crew.movie_id="movie_id = 12"', 'movie_crew.job="Second Film Editor"', 'person.person_id="person IDs"']
+ Mapping: ['movie_cast.*="movie ID"', 'movie_cast.character_name="character name in the movie"', 'movie_cast.person_id="starring Jim Carrey"', 'movie.movie_id="movie ID"']
+ Output:
+Mapping: ['movie.*="titles of the movies", "movie_cast.person_name"="Jim Carrey"]
+ Mapping: ['movie.*="titles", "genre.genre_name"="horror films"', 'movie.vote_average>7']
+ Mapping: ['movie.*="movie", "movie_languages.language_name"="Latin", "movie.release_date"="released between 1990-01-01 and 12-31-1995"]
+ Mapping: ['movie.*="average revenue", "movie.revenue"="revenue", "country.country_name"="United States of America", "movie.release_date"="release_date LIKE '2006%'']
+ Mapping: ['production_country.movie_id="movies produced in India", genre.genre_name="romance films", year.release_date="2015"']
+ Mapping: ['production_company.*="companies", "movie.title"="movie 'Ultramarines: A Warhammer 40,000 Movie'"']
+ Mapping: ['production_country.*="movie produced in France"', 'country.country_name="France"]
+ Mapping: ['movie_crew.*="movie 'Transformers'"', 'movie_crew.job="Director"', 'person.*="who is the director"', 'movie.title="movie 'Transformers'"]
+ Mapping: ['movie.runtime="runtime = 14"', 'genre.genre_name="genre of the movie title"']
+ Given the NL question "List down the movie titles that were produced in Canada," the SQL query, and the database schema, the mapping would be as follows:
+
+Mapping: ['production_country.*="movie produced in Canada"', 'country.country_name="Canada"']
+
+Here, the tables 'production_country' and 'country' are the most relevant tables to the question in order of highest relevance. The columns within each table are sorted within the table itself. The top 4 tables are 'production_country', 'country', 'movie', and 'production_company', but we only require the first two tables for this specific question.
+
+The top 5 columns within each table are as follows:
+
+- For 'production_country': production_country.movie_id, production_country.country_id, production_country.*
+- For 'country': country.country_name, country.country_id, country.country_iso_code, country.*
+
+Colums are sorted in descending order of relevance to the question within each table. The column 'production_country.movie_id' is listed before 'country.country_name' because it is a column of 'production_country' table and all columns of 'production_country' table are listed before the columns of 'country' table.
+ Mapping: ['movie.*="Accumulate the budget", "movie_keywords.keyword_name"="video game"]
+ Mapping: ['movie_company.movie_id="movie 'Gladiator'"', 'production_company.company_id="ID of the production company"']
+ Output:
+Mapping: ['movie.*="movies"', 'movie_company.company_name="Lucasfilm"]
+ Mapping: ['movie.*="company_name"', 'movie.revenue="highest revenue"', 'production_company.company_name="Warner Bros. Pictures"']
+ Mapping: ['movie.*="movie 'C''era una volta il West'", language.language_name="language of the movie"]
+ Mapping: ['movie.*="difference in revenues", "movie.movie_id"="English movies", "movie.movie_id"="Latin movies", "language.language_name"="English", "language.language_name"="Latin']
+ Based on the given question and schema items, here is the mapping in the required format:
+
+Mapping: ['movie.revenue="average revenue"', 'language.language_name="Latin movies"']
+
+Explanation:
+1. 'movie.revenue' because the question asks for the average revenue, and 'revenue' is a column in the 'movie' table that stores the revenue information.
+2. 'language.language_name' because the question specifies 'Latin movies', as 'language_name' column in the 'language' table stores the language information, and in this case, 'Latin' movies.
+ Mapping: ['production_company.*="number of movies", "production_company.company_name"="Eddie Murphy Productions"']
+ Mapping: ['movie_cast.*="actors who have played characters"', 'person.person_name="actors"', 'movie_cast.character_name="characters with 'captain' in their names"']
+ Mapping: ['movie_keywords.*="keyword"', 'movie.release_date="2006"']
+ Mapping: ['genre.*="least common genre"', 'movie_genres.genre_id="genre"']
+
+In this example, we have a total of 13 tables in the database. However, we selected the tables 'genre' and 'movie_genres' as the most relevant tables to the question in order of the highest relevance to the question. We always pick top 4 tables but in this example we only need the first two tables.
+
+So, we might include some tables that are not used in the question at all.
+
+In the SchemaItems list, first columns of the 'genre' and 'movie_genres', followed by 'movie_genres.*', 'movie.*', and 'movie_crew.*'.  The first five items are columns of 'genre'. These columns are then sorted in descending order of relevance to the question too.
+
+Note that, columns are sorted for each table and not across the tables. For instance, "genre.genre_name" listed before "movie_genres.genre_id" not because it has more relevance probability but because it is a column of 'genre' table and all columns of 'genre' table are listed before 'movie_genres' table.
+
+In this case, since the question is asking for the 'least common genre', the most relevant columns would be related to the genre itself. Therefore, "genre.genre_name" is ranked higher than "movie_genres.genre_id" because it directly refers to the genre name mentioned in the question.
+ Mapping: ['movie.*="revenue", "average revenue"', 'country.country_name="French movies"']
+ Output:
+Mapping: ['department.*="department has the most people"', 'department.department_id="id of the department with the most people"']
+ Mapping: ['movie.*="Four Rooms movie"', 'movie_languages.language_name="original language"']
+The top 4 tables to consider are 'movie', 'movie_languages', 'language', and 'language_role'.
+The first two tables, 'movie' and 'movie_languages', are relevant to the question in order of highest relevance to the question.
+The columns of 'movie' ranked by relevance to the question:
+ - movie.title: "'Four Rooms'"
+ - movie.movie_id: "movie ID" (Not relevant to the question but listed for completeness)
+ - movie.budget: "Budget" (Not relevant to the question but listed for completeness)
+ - movie.homepage: "Homepage" (Not relevant to the question but listed for completeness)
+ - movie.overview: "Overview" (Not relevant to the question but listed for completeness)
+The columns of 'movie_languages' ranked by relevance to the question:
+ - movie_languages.language_id: "language ID" (Not relevant to the question but listed for completeness)
+ - movie_languages.movie_id: "movie ID" (Not relevant to the question but listed for completeness)
+ - movie_languages.language_role_id: "language role ID" (Not relevant to the question but listed for completeness)
+ - movie_languages.language_name: "'original language'"
+Note that the other tables ('language' and 'language_role') are not directly relevant to this specific question, but they are still included in the list of SchemaItems.
+This is because they are part of the database schema and may become relevant in other questions that require information from these tables.
+ Mapping: ['movie_cast.*="Pirates of the Caribbean: At World's End" movie', 'movie_cast.cast_order="main actor"', 'person.person_name="who"']
+ Mapping: ['movie_crew.*="Pirates of the Caribbean: At World's End"',
+          'movie_crew.job="Music Editor"',
+          'person.*="names"',
+          'department.*="departments"']
+ Mapping: ['movie.*="movie that", movie.runtime="running time", movie.release_date="in 2016", movie_company.company_id="production company", production_company.company_name="production companies", movie_company.movie_id="of the movie"]
+ Mapping: ['movie.title="movie Dancer in the Dark", genre.genre_name="genre does the movie belong to"']
+ Mapping: ['movie.*="movies", "movie.genre_id"="genre", "genre.genre_name"="adventure movies", "movie.release_date"="released in 2000"']
+ Mapping: ['movie.*="movie Finding Nemo", "keyword.keyword_name"="Finding Nemo"]
+ Output:
+Mapping: ['repo.*="number of solution paths", 'repo.id="2nd repository"', 'solution.*="repository"', 'solution.repoid="2nd most popular repository"']
+ Mapping: ['solution.*="Solution", "solution.processedtime"="average processed time"', 'repo.*="repository", "repo.url"="https://github.com/zphingphong/DiscardCustomerApp.git"']
+ Mapping: ['solution.*="number of solution paths", "repo.url"="https://github.com/jeffdik/tachy.git"]
+ Mapping: ['repo.*="github address", "repo.url"="github address of the repository"']
+ Mapping: ['solution.processedtime="average time needed for the solutions", repo.url="https://github.com/jeffdik/tachy.git"']
+ Output:
+Mapping: ['solution.*="follower count for solution"', 'repo.forks="forks"']
+ Mapping: ['repo.*="number of watchers", "solution.repoid"="repository of the solution", "solution.id"="No. 338082"]
+ Mapping:
+['repo.*="repository which got '189' Stars"', 'solution.wascompiled="needs to be compiled"', 'solution.repoid="repository"']
+ Mapping: ['solution.*="number of solutions", "repo.url"="https://github.com/derickbailey/presentations-and-training.git"]
+ Mapping: ['solution.*="total processed time", "repo.forks"="number of forks", "repo.id"="repository id", "repo.processedtime"="processed time"]
+ Mapping: ['repo.*="percentage of Forks to Stars", "repo.id"="repository for solution 104086", "solution.id"="solution 104086", "solution.repoid"="repository for solution 104086"]
+ Mapping: ['repo.id="respository among the repositories", solution.id="solution id of the repository"]
+ Mapping: ['method.*="API calls for method number 10"', 'method.id="method number 10"', 'method.name="Method_100k.Id=10"', 'method.summary="intended course of action"']
+ Mapping: ['repo.*="number of watchers"', 'solution.path="path maff_se3ue7\US7.sln"']
+ Mapping: ['trains.*="IDs of trains", "trains.direction"="east direction", "trains.id"="IDs of trains that run in the east direction", "cars.train_id"="IDs of trains that have less than 4 cars", "cars.*"="cars of the trains that have less than 4 cars, possibly other irrelevant car data"]
+ Mapping: ['trains.*="east direction"', 'trains.direction="east direction"', 'cars.train_id="cars on trains"', 'trains.id="number of trains"']
+ Output:
+Mapping: ['trains.*="train running east"', 'trains.id="ids of the train"']
+ Output:
+Mapping: ['trains.*="directions for the trains"', 'cars.trailPosi="2 or less cars"']
+
+The top 4 relevant tables for the given NL question are 'trains' and 'cars'. Among these, we will include 'trains' first followed by 'cars'.
+
+The top 5 columns within each table are sorted in descending order of relevance to the question. However, in this case, there is no explicit n-gram in the question that refers to a specific schema item, so we will use the convention of sorting by the column names themselves.
+
+Mapping:
+
+1. [trains.*="directions for the trains"]
+   - ...
+   - trains.id
+   - trains.direction
+   - trains.train_number
+   - trains.start_time
+   - trains.end_time
+
+2. [cars.trailPosi="2 or less cars"]
+   - ...
+   - cars.id
+   - cars.traingroup_id
+   - cars.position
+   - cars.trailPosi
+   - cars.shape
+   - cars.len
+   - cars.color
+   - cars.*
+ Mapping: ['characters.*="role of Joker"', 'movies.title="movie Batman"']
+ Mapping: ['characters.*="Dr. Archibald 'Moonlight' Graham", "movie.*=movie name']
+ Mapping: ['characters.*="Tom Cruise"', 'characters.movieid="Born on the Fourth of July"]
+ Mapping: ['characters.*="names of characters"', 'actor.name="Tom Cruise"']
+ Mapping: ['actors.*="tallest actor"', 'characters.movie_title="movie Batman"]
+ Mapping: ['characters.*="movie with the character named "Peter Quill""', 'movie.mpaa rating="MPAA rating"']
+ Mapping: ['characters.*="Who was the actor"', 'movie.title="movie 'Batman'"', 'characters.movieid="movie 'Batman'"', 'characters.screentime="with the longest screentime"']
+ Mapping: ['characters.*="character named Chanice Kobolowski", ' 'actor.actorid="Chanice Kobolowski"']
+ Mapping: ['actor.*="actor who played", "characters.character name"="Sully"', 'actor.date of birth="birthday"']
+ Mapping: ['actor.*="actor who played 'Michael Moscovitz'", 'characters.character name="Michael Moscovitz"']
+ Mapping: ['actor.*="actor who played", "actor.name"="Lurch"']
+ Mapping: ['characters.*="No.3 character", "characters.creditorder"="3", "characters.movieid"="G.I. Joe: The Rise of Cobra", "movie.title"="G.I. Joe: The Rise of Cobra"]
+ Mapping: ['characters.creditorder="No.2"', 'characters.movieid="American Hustle"', 'characters.*="played"', 'actor.*="character in"', 'actor.actorid="who"']
+ Mapping: ['characters.*="No.1 character"', 'movie.release date="2015/10/26"']
+ Mapping: ['characters.*="USA actors", "characters.movieid"="Movie Mrs. Doubtfire", "actor.birth country"="Birth Country = 'USA'", "actor.*"="actor ID"]
+ Mapping: ['movie.*="rated PG movies"', 'movie.release_date="released in June 1990"', 'movie.mpaa_rating="PG"']
+ Mapping: ['movies.*="romantic movies"', 'actors.name="John Travolta"]
+
+For the given NL question and database schema, we selected the 'movies' and 'actors' tables as the most relevant tables to the question in order of relevance to the question. We might include some tables that are not used in the question at all.
+
+In the SchemaItems list, first the columns of the 'movies', followed by 'actors' and 'characters' tables. The first five items are columns of 'movies'.
+These columns are then sorted in descending order of relevance to the question too.
+Note that, columns are sorted for each table and not across the tables.
+
+For instance, "movies.genre" listed before "movies.movieid" not because it has more relevance probability but because it is a column of 'movies' table and all columns of 'movies' table are listed before 'actors' table.
+
+In the NL question, 'romantic movies' refers to 'movie.genre' and 'John Travolta' refers to 'actors.name' in the database schema.
+ Mapping: ['actor.*="male", "actor.birth country="USA", "actor.gender="Male"', 'movie.*="Ghost"', 'characters.*="starred in"']
+ Mapping: ['movie.*="drama movie", "movie.gross"="136766062", "characters.*"="actor's name", "characters.character name"="Don Altobello"]
+ Mapping: ['twitter.*="tweets", "twitter.reach"="Reach", "twitter.reach"="more than 1000"']
+ Mapping: ['twitters.*="number of tweets"', 'location.country="Argentina"']
+ Mapping: ['twitter.*="number of unique users", twitter.userid="id of the user"', 'user.gender="gender of the user"']
+ Output:
+Mapping: ['twitter.locationid="city of the user"']
+ Mapping: ['twitter.tweetid="tweet \`tw-685681052912873473\`", twitter.locationid="state was tw-685681052912873473 from"', 'location.statecode="state code"']
+ Mapping: ['twitter.*="Happy New Year to all those AWS instances of ours!"', 'twitter.user_id="unique users"']
+
+In this example, the most relevant table to the question is 'twitter' and we select it first. We pick the top 4 tables but only the first table is needed for this question.
+The SchemaItems list includes the first five columns of 'twitter'. These columns are then sorted in descending order of relevance to the question, where "twitter.text" is the most relevant as it references the text in the question and "twitter.user_id" is the second most relevant as it references the unique users (Reach).
+
+Schema:
+twitter:
+  text: text
+  user\_id: number
+  tweet\_id: number
+  weekday: text
+  hour: time
+
+user:
+  user\_id: number
+  gender: text
+
+location:
+  location\_id: number
+  country: text
+  state: text
+  city: text
+  statecode: text
+ Mapping: ['twitter.*="tweets posted by", user.gender="Unknown"']
+ Mapping: ['user.userid="total number of", user.gender="male tweet IDs"']
+ Output:
+Mapping: ['location.country="from which country"', 'twitter.tweetid="Tweet ID tw-682723090279841798"']
+ Mapping: ['twitter.lang="language", "twitter.locationid"="Brazil"']
+ Mapping: ['twitter.*="French tweets", "user.gender=Male"']
+ Mapping: ['location.city="cities"', 'twitter.sentiment="neutral sentiment (Sentiment = 0)"']
+ Mapping: ['student.*="Ogdon Zywicki's research assistants", "ra.prof_id="prof_id', "ra.student_id="research assistant', "student.gpa="GPA']
+ Mapping: ['prof.*="Professor Ogdon Zywicki's", 'prof.last_name="Zywicki", 'prof.first_name="Ogdon", "ra.*="Professor Ogdon Zywicki's research", "ra.student_id"="Assistant student that serves for research", "student.*="postgraduate", "student.type"="type = 'TPG'"]
+ Mapping: ['student.*="highest intelligence", "student.type"="bachelor's degree", "student.student_id"="students"]
+ Mapping: ['student.*="unpaid Research Assistants", ra.salary="salary = 'free'"']
+ Mapping: ['course.*="easiest courses"', 'registration.grade="A"', 'student.name="student"', 'registration.course_id="course"']
+
+In this example, the top 4 tables relevant to the question are 'course', 'registration', 'student', and 'ra'. This is because the question asks about courses, students, their grades, and registrations.
+
+The columns within each table are ranked in descending order of relevance to the question. The first five items are the columns of 'course', followed by 'registration', 'student', and 'ra' tables respectively.
+
+Here's the reasoning for the most relevant columns:
+
+- 'course.*': The question mentions the courses, so it's relevant to include all columns of the 'course' table.
+- 'registration.grade' and 'student.name': Both 'registration.grade' and 'student.name' are directly connected to the question as it asks for the course where 'most students got an A'.
+- 'registration.course_id': Since the question is asking about courses directly, it's relevant to include 'registration.course_id' as it represents the relationship between students and courses.
+- The other columns in the list are also relevant to the question but not as directly as the first four columns. They can provide additional context or help with filtering the data in case of multiple tables with similar column names, but they don't directly answer the question.
+ Mapping: ['student.*="student with the highest GPA", "registration.student_id"="student with the highest GPA", "registration.course_id"="courses"]
+ Output:
+Mapping: ['course.*="courses", "student.*="student's names", "student.intelligence=1 (lowest intelligence)", "registration.sat=1 (least satisfied)", "registration.course_id=courses (courses with lowest intelligence are least satisfied)" ]
+ In the given NL question "Describe the names and credits of the least difficult courses", the most relevant tables to this question are 'course' and 'prof' because the question asks for the details of courses and the question mentions 'prof' in the context of difficulty. We will pick the top 4 tables but in this example we only need the first two tables.
+
+In the SchemaItems list, we start with the columns of the 'course' table, followed by 'prof' table. The first five items are columns of 'course'. These columns are then sorted in descending order of relevance to the question:
+
+Mapping: ['course.*="names and credits"', 'course.diff="least difficult"']
+[ 'course.name', 'course.credit', 'course.diff', 'course.course_id', 'course.*' ]
+[ 'prof.gender', 'prof.email', 'prof.popularity', 'prof.prof_id', 'prof.*' ]
+ Mapping: ['student.student_id="number of students", student.intelligence="intellegence level"', 'registration.grade="grade of B"', 'registration.student_id="students with a grade of B"]
+ Mapping: ['course.*="course's name",'registration.course_id="course",'registration.grade="grade of D"']
+ Output:
+Mapping: ['student.*="students", "student.gpa"="GPA of 3.5", "ra.salary"="salary = 'low'"']
+ Mapping: ['registration.*="good student", "good student with their courses", registration.grade="sat", registration.course_id="courses"]
+ Output:
+Mapping: ['registration.*="grade IS NULL"', 'student.f_name="full name of students"', 'student.l_name="full name of students"', 'course.name="courses"', 'ra.capability="capability"']
+ Output:
+Mapping: ['registration.*="student satisfaction value", "registration.sat"="sat", "registration.course_id"="course", "student.*"="research postgraduate students"]
+ Mapping: ['ra.*="students with a capability below 3", "student.type"="undergraduate students", "student.type"="research postgraduate students"']
+ Mapping: ['course.*="courses", "number of courses"', 'course.courselevel="Level_300"']
+
+In this example, we have a total of 8 tables in the database. However, we selected the table 'course' as the most relevant table to the question. Since the question does not make a reference to any other table, we only include 'course' table in the mapping.
+
+We also pick the top 5 columns within each table. So, we will only list the top 5 columns of the 'course' table in the mapping. These columns are then sorted in descending order of relevance to the question.
+
+The first five items are columns of 'course'.
+
+"course.course_id" listed before "course.courselevel" not because it has more relevance probability but because it is a column of 'course' table and all columns of 'course' table are listed before 'course.courselevel' column which is of lesser relevance but referred to in the question.
