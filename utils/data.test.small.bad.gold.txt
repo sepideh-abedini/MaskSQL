@@ -1,0 +1,192 @@
+SELECT T2.Phone FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode ORDER BY T1.NumGE1500 DESC LIMIT 1	california_schools
+SELECT T2.CDSCode FROM schools AS T1 INNER JOIN frpm AS T2 ON T1.CDSCode = T2.CDSCode WHERE T2.`Enrollment (K-12)` + T2.`Enrollment (Ages 5-17)` > 500	california_schools
+SELECT T1.Phone FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds ORDER BY CAST(T2.NumGE1500 AS REAL) / T2.NumTstTakr DESC LIMIT 3	california_schools
+SELECT COUNT(CDSCode) FROM frpm WHERE `County Name` = 'Los Angeles' AND `Free Meal Count (K-12)` > 500 AND `FRPM Count (K-12)`< 700	california_schools
+SELECT T2.School, T1.AvgScrWrite FROM satscores AS T1 INNER JOIN schools AS T2 ON T1.cds = T2.CDSCode WHERE T2.AdmFName1 = 'Ricci' AND T2.AdmLName1 = 'Ulrich'	california_schools
+SELECT CAST(SUM(CASE WHEN County = 'Colusa' THEN 1 ELSE 0 END) AS REAL) / SUM(CASE WHEN County = 'Humboldt' THEN 1 ELSE 0 END) FROM schools WHERE MailState = 'CA'	california_schools
+SELECT COUNT(T2.School) FROM frpm AS T1 INNER JOIN schools AS T2 ON T1.CDSCode = T2.CDSCode WHERE T2.County = 'Los Angeles' AND T2.Charter = 0 AND CAST(T1.`Free Meal Count (K-12)` AS REAL) * 100 / T1.`Enrollment (K-12)` < 0.18	california_schools
+SELECT T1.date FROM account AS T1 INNER JOIN trans AS T2 ON T1.account_id = T2.account_id WHERE T2.amount = 840 AND T2.date = '1998-10-14'	financial
+SELECT T1.district_id FROM account AS T1 INNER JOIN loan AS T2 ON T1.account_id = T2.account_id WHERE T2.date = '1994-08-25'	financial
+SELECT COUNT(T2.account_id) FROM district AS T1 INNER JOIN account AS T2 ON T1.district_id = T2.district_id WHERE STRFTIME('%Y', T2.date) = '1996' AND T1.A2 = 'Litomerice'	financial
+SELECT (CAST(SUM(CASE WHEN status = 'A' THEN amount ELSE 0 END) AS REAL) * 100) / SUM(amount) FROM loan	financial
+SELECT T2.A2, T2.A3 FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id INNER JOIN loan AS T3 ON T1.account_id = T3.account_id WHERE T3.loan_id = 4990	financial
+SELECT T2.A2, COUNT(T1.client_id) FROM client AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T1.gender = 'F' GROUP BY T2.district_id, T2.A2 ORDER BY COUNT(T1.client_id) DESC LIMIT 9	financial
+SELECT COUNT(T2.account_id) FROM district AS T1 INNER JOIN account AS T2 ON T1.district_id = T2.district_id GROUP BY T1.A16 ORDER BY T1.A16 DESC LIMIT 1	financial
+SELECT COUNT(T1.account_id) FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id INNER JOIN loan AS T3 ON T1.account_id = T3.account_id WHERE T1.district_id = 1 AND (T3.status = 'C' OR T3.status = 'D')	financial
+SELECT COUNT(T1.client_id) FROM client AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T1.gender = 'M' AND T2.A15 = (SELECT T3.A15 FROM district AS T3 ORDER BY T3.A15 DESC LIMIT 1, 1)	financial
+SELECT COUNT(T1.card_id) FROM card AS T1 INNER JOIN disp AS T2 ON T1.disp_id = T2.disp_id WHERE T1.type = 'gold' AND T2.type = 'OWNER'	financial
+SELECT COUNT(T1.account_id) FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.A2 = 'Pisek'	financial
+SELECT T2.account_id FROM district AS T1 INNER JOIN account AS T2 ON T1.district_id = T2.district_id INNER JOIN disp AS T3 ON T2.account_id = T3.account_id WHERE T3.type = 'OWNER' AND T1.A2 = 'Tabor'	financial
+SELECT T3.district_id FROM `order` AS T1 INNER JOIN account AS T2 ON T1.account_id = T2.account_id INNER JOIN district AS T3 ON T2.district_id = T3.district_id WHERE T1.order_id = 33333	financial
+SELECT T1.A3 FROM district AS T1 INNER JOIN client AS T2 ON T1.district_id = T2.district_id WHERE T2.client_id = 3541	financial
+SELECT COUNT(T2.account_id) FROM district AS T1 INNER JOIN account AS T2 ON T1.district_id = T2.district_id WHERE T1.A2 = 'Jesenik'	financial
+SELECT CAST(SUM(T2.gender = 'F') AS REAL) * 100 / COUNT(T2.client_id) FROM district AS T1 INNER JOIN client AS T2 ON T1.district_id = T2.district_id WHERE T1.A11 > 10000	financial
+SELECT COUNT(T1.account_id) FROM account AS T1 INNER JOIN disp AS T2 ON T1.account_id = T2.account_id WHERE T2.type = 'OWNER' AND T1.frequency = 'POPLATEK PO OBRATU'	financial
+SELECT COUNT(account_id) FROM account AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE STRFTIME('%Y', T1.date) > '1996' AND T2.A2 = 'Beroun'	financial
+SELECT COUNT(T2.account_id) FROM account AS T1 INNER JOIN loan AS T2 ON T1.account_id = T2.account_id WHERE T2.duration = 24 AND T1.frequency = 'POPLATEK TYDNE'	financial
+SELECT DISTINCT T1.element FROM atom AS T1 INNER JOIN connected AS T2 ON T1.atom_id = T2.atom_id WHERE T2.bond_id = 'TR004_8_9'	toxicology
+SELECT T1.bond_type FROM bond AS T1 INNER JOIN connected AS T2 ON T1.bond_id = T2.bond_id WHERE T2.atom_id = 'TR004_8' AND T2.atom_id2 = 'TR004_20' OR T2.atom_id2 = 'TR004_8' AND T2.atom_id = 'TR004_20'	toxicology
+SELECT DISTINCT T2.label FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T1.element != 'sn'	toxicology
+SELECT DISTINCT T.element FROM atom AS T WHERE T.molecule_id = 'TR000' ORDER BY T.element LIMIT 3	toxicology
+SELECT T.bond_id FROM connected AS T WHERE T.atom_id2 = 'TR000_2'	toxicology
+SELECT DISTINCT T2.molecule_id FROM bond AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T1.bond_type = '-' AND T2.label = '-' ORDER BY T2.molecule_id LIMIT 3	toxicology
+SELECT CAST(COUNT(T2.bond_id) AS REAL) / COUNT(T1.atom_id) FROM atom AS T1 INNER JOIN connected AS T2 ON T1.atom_id = T2.atom_id WHERE T1.element = 'i'	toxicology
+SELECT COUNT(T1.atom_id) FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id INNER JOIN bond AS T3 ON T2.molecule_id = T3.molecule_id WHERE T3.bond_type = '#' AND T1.element IN ('p', 'br')	toxicology
+SELECT molecule_id, T.label FROM molecule AS T WHERE T.molecule_id IN ('TR000', 'TR001', 'TR002')	toxicology
+SELECT COUNT(T.molecule_id) FROM molecule AS T WHERE T.molecule_id BETWEEN 'TR000' AND 'TR030' AND T.label = '+'	toxicology
+SELECT DISTINCT T2.molecule_id FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id INNER JOIN bond AS T3 ON T2.molecule_id = T3.molecule_id WHERE T3.bond_type = '#' AND T1.element = 'c' AND T2.label = '-'	toxicology
+SELECT T2.atom_id, T2.atom_id2 FROM bond AS T1 INNER JOIN connected AS T2 ON T1.bond_id = T2.bond_id WHERE T1.bond_type = '#'	toxicology
+SELECT T1.element FROM atom AS T1 INNER JOIN connected AS T2 ON T1.atom_id = T2.atom_id WHERE T2.bond_id = 'TR000_1_2'	toxicology
+SELECT T2.label FROM bond AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T1.bond_id = 'TR001_10_11'	toxicology
+SELECT COUNT(T1.atom_id) FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T2.label = '+'	toxicology
+SELECT T.bond_type FROM bond AS T WHERE T.bond_id = 'TR007_4_19'	toxicology
+SELECT DISTINCT T1.element FROM atom AS T1 INNER JOIN connected AS T2 ON T1.atom_id = T2.atom_id WHERE T2.bond_id = 'TR001_2_4'	toxicology
+SELECT DISTINCT T1.molecule_id FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T1.element = 'cl' AND T2.label = '+'	toxicology
+SELECT COUNT(DISTINCT T1.element) FROM atom AS T1 INNER JOIN connected AS T2 ON T1.atom_id = T2.atom_id WHERE T2.bond_id = 'TR001_3_4'	toxicology
+SELECT T.element FROM atom AS T WHERE T.atom_id = 'TR000_1'	toxicology
+SELECT T.molecule_id FROM ( SELECT T1.molecule_id, COUNT(T2.atom_id) FROM molecule AS T1 INNER JOIN atom AS T2 ON T1.molecule_id = T2.molecule_id WHERE T1.label = '-' GROUP BY T1.molecule_id HAVING COUNT(T2.atom_id) > 5 ) t	toxicology
+SELECT T1.element FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T1.atom_id = 'TR004_7' AND T2.label = '-'	toxicology
+SELECT T1.atom_id FROM atom AS T1 INNER JOIN molecule AS T2 ON T1.molecule_id = T2.molecule_id WHERE T1.element = 'o' AND T2.label = '+'	toxicology
+SELECT movie_title, movie_popularity FROM movies WHERE movie_release_year = 2021 AND director_name = 'Steven Spielberg'	movie_platform
+SELECT T2.director_url FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE T1.user_id = 2452551 AND T1.critic_likes = 39	movie_platform
+SELECT T2.rating_url FROM movies AS T1 INNER JOIN ratings AS T2 ON T1.movie_id = T2.movie_id WHERE T2.user_id = 22030372 AND T2.rating_score = 5 AND T1.movie_title = 'Riff-Raff'	movie_platform
+SELECT T2.rating_url FROM movies AS T1 INNER JOIN ratings AS T2 ON T1.movie_id = T2.movie_id WHERE T2.user_id = 45579900 AND T1.movie_title = 'The Vertical Ray of the Sun' AND T2.critic_likes = 20	movie_platform
+SELECT list_url FROM lists WHERE list_title = 'Short and pretty damn sweet'	movie_platform
+SELECT T1.critic FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE T2.movie_title = 'A Way of Life'	movie_platform
+SELECT T1.user_trialist FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE T2.movie_title = 'A Way of Life' AND T1.user_id = 39115684	movie_platform
+SELECT director_name FROM movies WHERE movie_title = 'Tokyo Eyes'	movie_platform
+SELECT user_id FROM lists ORDER BY list_followers DESC LIMIT 1	movie_platform
+SELECT T2.movie_title FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE T1.rating_score = 5 AND T1.user_id = 94978	movie_platform
+SELECT T2.movie_title FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE T2.movie_release_year = 2003 AND T1.user_id = 2941	movie_platform
+SELECT T2.list_title, T1.user_avatar_image_url FROM lists_users AS T1 INNER JOIN lists AS T2 ON T1.list_id = T2.list_id WHERE T1.user_id = 85981819 ORDER BY T2.list_creation_timestamp_utc LIMIT 1	movie_platform
+SELECT T2.movie_title, T1.rating_timestamp_utc, T1.rating_score FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE T1.user_id = 39115684	movie_platform
+SELECT T2.movie_title FROM ratings AS T1 INNER JOIN movies AS T2 ON T1.movie_id = T2.movie_id WHERE T1.user_id = 57756708 ORDER BY T1.rating_timestamp_utc DESC LIMIT 1	movie_platform
+SELECT fname, lname FROM employee WHERE STRFTIME('%Y', hire_date) < '1990'	book_publishing_company
+SELECT T1.fname, T1.lname, T2.job_desc FROM employee AS T1 INNER JOIN jobs AS T2 ON T1.job_id = T2.job_id WHERE T1.job_lvl > 200	book_publishing_company
+SELECT SUM(T1.qty) FROM sales AS T1 INNER JOIN stores AS T2 ON T1.stor_id = T2.stor_id INNER JOIN titles AS T3 ON T1.title_id = T3.title_id WHERE T2.state = 'Massachusetts' AND T3.type = 'business'	book_publishing_company
+SELECT T2.max_lvl - T1.job_lvl FROM employee AS T1 INNER JOIN jobs AS T2 ON T1.job_id = T2.job_id WHERE T1.fname = 'Diego' AND T1.minit = 'W' AND T1.lname = 'Roel'	book_publishing_company
+SELECT T1.first, T1.middle, T1.last FROM client AS T1 INNER JOIN callcenterlogs AS T2 ON T1.client_id = T2.`rand client` WHERE T2.`Date received` = '2017-03-27' AND T2.server = 'MICHAL'	retail_complains
+SELECT T2.ser_time FROM client AS T1 INNER JOIN callcenterlogs AS T2 ON T1.client_id = T2.`rand client` WHERE T1.first = 'Rachel' AND T1.last = 'Hicks' AND T2.`Date received` = '2017-03-27'	retail_complains
+SELECT T1.ser_time FROM callcenterlogs AS T1 INNER JOIN events AS T2 ON T1.`Complaint ID` = T2.`Complaint ID` WHERE T2.Client_ID = 'C00007127' AND T1.`Date received` = '2017-02-22'	retail_complains
+SELECT T2.`Sub-issue` FROM client AS T1 INNER JOIN events AS T2 ON T1.client_id = T2.Client_ID WHERE T1.first = 'Gunner' AND T1.middle = 'Omer' AND T1.last = 'Fuller' AND T1.sex = 'Male'	retail_complains
+SELECT T1.Product FROM reviews AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.city = 'Indianapolis' AND T1.Date = '2016-10-07'	retail_complains
+SELECT T1.email FROM client AS T1 INNER JOIN callcenterlogs AS T2 ON T1.client_id = T2.`rand client` WHERE T2.outcome = 'HANG'	retail_complains
+SELECT COUNT(T3.sex) FROM state AS T1 INNER JOIN district AS T2 ON T1.StateCode = T2.state_abbrev INNER JOIN client AS T3 ON T2.district_id = T3.district_id WHERE T1.state = 'Massachusetts' AND T3.sex = 'Male'	retail_complains
+SELECT CAST(SUM(T1.age) AS REAL) / COUNT(T1.age) AS average FROM client AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.city = 'Norwalk'	retail_complains
+SELECT DISTINCT T2.Product FROM client AS T1 INNER JOIN events AS T2 ON T1.client_id = T2.Client_ID WHERE T1.year > 2005	retail_complains
+SELECT T2.Issue FROM callcenterlogs AS T1 INNER JOIN events AS T2 ON T1.`Complaint ID` = T2.`Complaint ID` WHERE T1.ser_time = ( SELECT MAX(ser_time) FROM callcenterlogs )	retail_complains
+SELECT T1.first, T1.middle, T1.last FROM client AS T1 INNER JOIN events AS T2 ON T1.client_id = T2.Client_ID WHERE T2.Tags = 'Older American' AND T2.`Consumer consent provided?` IN (NULL, 'N/A', '') LIMIT 2	retail_complains
+SELECT T1.email FROM client AS T1 INNER JOIN callcenterlogs AS T2 ON T1.client_id = T2.`rand client` WHERE T2.type = 'PS'	retail_complains
+SELECT T2.`Complaint ID` FROM client AS T1 INNER JOIN callcenterlogs AS T2 ON T1.client_id = T2.`rand client` WHERE T1.year = 1931	retail_complains
+SELECT T2.call_id FROM client AS T1 INNER JOIN callcenterlogs AS T2 ON T1.client_id = T2.`rand client` WHERE T1.first LIKE 'B%'	retail_complains
+SELECT AVG(T1.age) FROM client AS T1 INNER JOIN callcenterlogs AS T2 ON T1.client_id = T2.`rand client` WHERE T2.type = 'TT'	retail_complains
+SELECT `Complaint ID`, call_id, phonefinal FROM callcenterlogs WHERE strftime('%Y', `Date received`) = '2014' AND server = 'AVIDAN'	retail_complains
+SELECT T1.year, T1.month, T1.day, T1.email, T1.phone FROM client AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.city = 'Indianapolis' ORDER BY T1.year DESC, T1.month DESC, T1.day DESC LIMIT 1	retail_complains
+SELECT MAX(age) FROM client WHERE sex = 'Male'	retail_complains
+SELECT AVG(T1.age) FROM client AS T1 INNER JOIN district AS T2 ON T1.district_id = T2.district_id WHERE T2.division = 'South Atlantic'	retail_complains
+SELECT state_abbrev FROM district GROUP BY state_abbrev ORDER BY COUNT(city) DESC LIMIT 1	retail_complains
+SELECT DISTINCT T2.Product FROM callcenterlogs AS T1 INNER JOIN events AS T2 ON T1.`Complaint ID` = T2.`Complaint ID` WHERE T1.server = 'TOVA' AND T2.`Date received` LIKE '2017-03%'	retail_complains
+SELECT T1.company_name FROM production_company AS T1 INNER JOIN movie_company AS T2 ON T1.company_id = T2.company_id INNER JOIN movie AS T3 ON T2.movie_id = T3.movie_id WHERE T3.title = 'Four Rooms'	movies_4
+SELECT T3.person_name FROM movie AS T1 INNER JOIN movie_crew AS T2 ON T1.movie_id = T2.movie_id INNER JOIN person AS T3 ON T2.person_id = T3.person_id WHERE T1.title LIKE 'Pirates of the Caribbean: At World%s End'	movies_4
+SELECT CAST(COUNT(CASE WHEN T1.vote_average > 5 THEN 1 ELSE NULL END) AS REAL) * 100 / COUNT(T1.vote_average) FROM movie AS T1 INNER JOIN movie_crew AS T2 ON T1.movie_id = T2.movie_id INNER JOIN person AS T3 ON T2.person_id = T3.person_id WHERE T3.person_name = 'Dariusz Wolski' AND T2.job = 'Director of Photography'	movies_4
+SELECT T3.person_name FROM movie AS T1 INNER JOIN movie_crew AS T2 ON T1.movie_id = T2.movie_id INNER JOIN person AS T3 ON T2.person_id = T3.person_id WHERE T1.title = 'Land of the Dead' AND T2.job = 'Director'	movies_4
+SELECT T1.keyword_name FROM keyword AS T1 INNER JOIN movie_keywords AS T2 ON T1.keyword_id = T2.keyword_id GROUP BY T1.keyword_name ORDER BY COUNT(T1.keyword_name) DESC LIMIT 1	movies_4
+SELECT T1.company_name FROM production_company AS T1 INNER JOIN movie_company AS T2 ON T1.company_id = T2.company_id INNER JOIN movie AS T3 ON T2.movie_id = T3.movie_id WHERE T3.title = 'Crazy Heart'	movies_4
+SELECT T1.title FROM movie AS T1 INNER JOIN movie_genres AS T2 ON T1.movie_id = T2.movie_id INNER JOIN genre AS T3 ON T2.genre_id = T3.genre_id WHERE T3.genre_name = 'Crime' ORDER BY T1.release_date LIMIT 1	movies_4
+SELECT person_id FROM movie_crew WHERE movie_id = 12 AND job = 'Second Film Editor'	movies_4
+SELECT T2.movie_id, T2.character_name FROM person AS T1 INNER JOIN movie_cast AS T2 ON T1.person_id = T2.person_id WHERE T1.person_name = 'Jim Carrey'	movies_4
+SELECT T1.title FROM movie AS T1 INNER JOIN movie_cast AS T2 ON T1.movie_id = T2.movie_id INNER JOIN person AS T3 ON T2.person_id = T3.person_id WHERE T3.person_name = 'Jim Carrey'	movies_4
+SELECT T1.title FROM movie AS T1 INNER JOIN movie_genres AS T2 ON T1.movie_id = T2.movie_id INNER JOIN genre AS T3 ON T2.genre_id = T3.genre_id WHERE T3.genre_name = 'Horror' AND vote_average > 7	movies_4
+SELECT T1.title FROM movie AS T1 INNER JOIN movie_languages AS T2 ON T1.movie_id = T2.movie_id INNER JOIN language AS T3 ON T2.language_id = T3.language_id WHERE T3.language_name = 'Latin' AND T1.release_date BETWEEN '1990-01-01' AND '1995-12-31'	movies_4
+SELECT AVG(T1.revenue) FROM movie AS T1 INNER JOIN production_COUNTry AS T2 ON T1.movie_id = T2.movie_id INNER JOIN COUNTry AS T3 ON T2.COUNTry_id = T3.COUNTry_id WHERE T3.COUNTry_name = 'United States of America' AND CAST(STRFTIME('%Y', T1.release_date) AS INT) = 2006	movies_4
+SELECT CAST(COUNT(CASE WHEN T4.genre_name = 'Romance' THEN T1.movie_id ELSE NULL END) AS REAL) * 100 / COUNT(T1.movie_id) FROM movie AS T1 INNER JOIN movie_genres AS T2 ON T1.movie_id = T2.movie_id INNER JOIN production_COUNTry AS T3 ON T1.movie_id = T3.movie_id INNER JOIN genre AS T4 ON T2.genre_id = T4.genre_id INNER JOIN COUNTry AS T5 ON T3.COUNTry_id = T5.COUNTry_id WHERE T5.COUNTry_name = 'India' AND T1.release_date BETWEEN '2015-01-01' AND '2015-12-31'	movies_4
+SELECT T1.company_name FROM production_company AS T1 INNER JOIN movie_company AS T2 ON T1.company_id = T2.company_id INNER JOIN movie AS T3 ON T2.movie_id = T3.movie_id WHERE T3.title = 'Ultramarines: A Warhammer 40,000 Movie'	movies_4
+SELECT T1.title FROM movie AS T1 INNER JOIN production_COUNTry AS T2 ON T1.movie_id = T2.movie_id INNER JOIN COUNTry AS T3 ON T2.COUNTry_id = T3.COUNTry_id WHERE T3.COUNTry_name = 'France' LIMIT 10	movies_4
+SELECT T3.person_name FROM movie AS T1 INNER JOIN movie_crew AS T2 ON T1.movie_id = T2.movie_id INNER JOIN person AS T3 ON T2.person_id = T3.person_id WHERE T1.title = 'Transformers' AND T2.job = 'Director'	movies_4
+SELECT T3.genre_name FROM movie AS T1 INNER JOIN movie_genres AS T2 ON T1.movie_id = T2.movie_id INNER JOIN genre AS T3 ON T2.genre_id = T3.genre_id WHERE T1.runtime = 14	movies_4
+SELECT T1.title FROM movie AS T1 INNER JOIN production_COUNTry AS T2 ON T1.movie_id = T2.movie_id INNER JOIN COUNTry AS T3 ON T2.COUNTry_id = T3.COUNTry_id WHERE T3.COUNTry_name = 'Canada'	movies_4
+SELECT SUM(T1.budget) FROM movie AS T1 INNER JOIN movie_keywords AS T2 ON T1.movie_id = T2.movie_id INNER JOIN keyword AS T3 ON T2.keyword_id = T3.keyword_id WHERE T3.keyword_name = 'video game'	movies_4
+SELECT T2.company_id FROM movie AS T1 INNER JOIN movie_company AS T2 ON T1.movie_id = T2.movie_id WHERE T1.title = 'Gladiator'	movies_4
+SELECT T3.title FROM production_company AS T1 INNER JOIN movie_company AS T2 ON T1.company_id = T2.company_id INNER JOIN movie AS T3 ON T2.movie_id = T3.movie_id WHERE T1.company_name = 'Lucasfilm'	movies_4
+SELECT T3.title FROM production_company AS T1 INNER JOIN movie_company AS T2 ON T1.company_id = T2.company_id INNER JOIN movie AS T3 ON T2.movie_id = T3.movie_id WHERE T1.company_name = 'Warner Bros. Pictures' ORDER BY T3.revenue DESC LIMIT 1	movies_4
+SELECT T3.language_name FROM movie AS T1 INNER JOIN movie_languages AS T2 ON T1.movie_id = T2.movie_id INNER JOIN language AS T3 ON T2.language_id = T3.language_id WHERE T1.title LIKE 'C%era una volta il West'	movies_4
+SELECT SUM(CASE WHEN T3.language_name = 'English' THEN T1.revenue ELSE 0 END) - SUM(CASE WHEN T3.language_name = 'Latin' THEN T1.revenue ELSE 0 END) AS DIFFERENCE FROM movie AS T1 INNER JOIN movie_languages AS T2 ON T1.movie_id = T2.movie_id INNER JOIN language AS T3 ON T2.language_id = T3.language_id	movies_4
+SELECT AVG(T1.revenue) FROM movie AS T1 INNER JOIN movie_languages AS T2 ON T1.movie_id = T2.movie_id INNER JOIN language AS T3 ON T2.language_id = T3.language_id WHERE T3.language_name = 'Latin'	movies_4
+SELECT COUNT(T1.movie_id) FROM movie_company AS T1 INNER JOIN production_company AS T2 ON T1.company_id = T2.company_id WHERE T2.company_name = 'Eddie Murphy Productions'	movies_4
+SELECT DISTINCT T1.person_name FROM person AS T1 INNER JOIN movie_cast AS T2 ON T1.person_id = T2.person_id WHERE T2.character_name LIKE '%captain%'	movies_4
+SELECT T3.keyword_name FROM movie AS T1 INNER JOIN movie_keywords AS T2 ON T1.movie_id = T2.movie_id INNER JOIN keyword AS T3 ON T2.keyword_id = T3.keyword_id WHERE T1.release_date LIKE '2006%' GROUP BY T3.keyword_name ORDER BY COUNT(T3.keyword_name) DESC LIMIT 1	movies_4
+SELECT T2.genre_name FROM movie_genres AS T1 INNER JOIN genre AS T2 ON T1.genre_id = T2.genre_id GROUP BY T2.genre_id ORDER BY COUNT(T1.movie_id) LIMIT 2, 1	movies_4
+SELECT AVG(T1.revenue) FROM movie AS T1 INNER JOIN production_COUNTry AS T2 ON T1.movie_id = T2.movie_id INNER JOIN COUNTry AS T3 ON T2.COUNTry_id = T3.COUNTry_id WHERE T3.COUNTry_name = 'France'	movies_4
+SELECT T1.department_name FROM department AS T1 INNER JOIN movie_crew AS T2 ON T1.department_id = T2.department_id GROUP BY T1.department_id ORDER BY COUNT(T2.department_id) DESC LIMIT 1	movies_4
+SELECT T3.language_name FROM movie AS T1 INNER JOIN movie_languages AS T2 ON T1.movie_id = T2.movie_id INNER JOIN language AS T3 ON T2.language_id = T3.language_id INNER JOIN language_role AS T4 ON T2.language_role_id = T4.role_id WHERE T4.language_role = 'Original' AND T1.title = 'Four Rooms'	movies_4
+SELECT T3.person_name FROM movie AS T1 INNER JOIN movie_cast AS T2 ON T1.movie_id = T2.movie_id INNER JOIN person AS T3 ON T2.person_id = T3.person_id WHERE T1.title LIKE 'Pirates of the Caribbean: At World%s End' ORDER BY T2.cast_order LIMIT 1	movies_4
+SELECT T3.person_name, T4.department_name FROM movie AS T1 INNER JOIN movie_crew AS T2 ON T1.movie_id = T2.movie_id INNER JOIN person AS T3 ON T2.person_id = T3.person_id INNER JOIN department AS T4 ON T2.department_id = T4.department_id WHERE T1.title LIKE 'Pirates of the Caribbean: At World%s End' AND T2.job = 'Music Editor'	movies_4
+SELECT T.company_name FROM ( SELECT DISTINCT T3.company_name, T1.runtime FROM movie AS T1 INNER JOIN movie_company AS T2 ON T1.movie_id = T2.movie_id INNER JOIN production_company AS T3 ON T3.company_id = T2.company_id WHERE T1.release_date LIKE '2016%' ) T WHERE T.runtime * 100 > (0.35 * ( SELECT AVG(T1.runtime) FROM movie AS T1 INNER JOIN movie_company AS T2 ON T1.movie_id = T2.movie_id INNER JOIN production_company AS T3 ON T3.company_id = T2.company_id WHERE T1.release_date LIKE '2016%' ) + ( SELECT AVG(T1.runtime) FROM movie AS T1 INNER JOIN movie_company AS T2 ON T1.movie_id = T2.movie_id INNER JOIN production_company AS T3 ON T3.company_id = T2.company_id WHERE T1.release_date LIKE '2016%' )) * 100	movies_4
+SELECT T3.genre_name FROM movie AS T1 INNER JOIN movie_genres AS T2 ON T1.movie_id = T2.movie_id INNER JOIN genre AS T3 ON T2.genre_id = T3.genre_id WHERE T1.title = 'Dancer in the Dark'	movies_4
+SELECT COUNT(T1.movie_id) FROM movie AS T1 INNER JOIN movie_genres AS T2 ON T1.movie_id = T2.movie_id INNER JOIN genre AS T3 ON T2.genre_id = T3.genre_id WHERE T3.genre_name = 'Adventure' AND CAST(STRFTIME('%Y', T1.release_date) AS INT) = 2000	movies_4
+SELECT T3.keyword_name FROM movie AS T1 INNER JOIN movie_keywords AS T2 ON T1.movie_id = T2.movie_id INNER JOIN keyword AS T3 ON T2.keyword_id = T3.keyword_id WHERE T1.title = 'Finding Nemo'	movies_4
+SELECT COUNT(DISTINCT T2.Path) FROM Repo AS T1 INNER JOIN Solution AS T2 ON T1.Id = T2.RepoId WHERE T1.Watchers = ( SELECT Watchers FROM Repo ORDER BY Watchers DESC LIMIT 1, 1 )	codebase_comments
+SELECT CAST(SUM(T2.ProcessedTime) AS REAL) / COUNT(T2.RepoId) FROM Repo AS T1 INNER JOIN Solution AS T2 ON T1.Id = T2.RepoId WHERE T1.Url = 'https://github.com/zphingphong/DiscardCustomerApp.git'	codebase_comments
+SELECT COUNT(T2.Path) FROM Repo AS T1 INNER JOIN Solution AS T2 ON T1.Id = T2.RepoId WHERE T1.Url = 'https://github.com/jeffdik/tachy.git' AND T2.WasCompiled = 0	codebase_comments
+SELECT T1.Url FROM Repo AS T1 INNER JOIN Solution AS T2 ON T1.Id = T2.RepoId WHERE T2.Id = 12	codebase_comments
+SELECT CAST(SUM(T2.ProcessedTime) AS REAL) / COUNT(T2.RepoId) FROM Repo AS T1 INNER JOIN Solution AS T2 ON T1.Id = T2.RepoId WHERE T1.Url = 'https://github.com/jeffdik/tachy.git'	codebase_comments
+SELECT CAST((SUM(CASE WHEN T2.Id = 18 THEN T1.Forks ELSE 0 END) - SUM(CASE WHEN T2.Id = 19 THEN T1.Forks ELSE 0 END)) AS REAL) * 100 / SUM(CASE WHEN T2.Id = 19 THEN T1.Forks ELSE 0 END) FROM Repo AS T1 INNER JOIN Solution AS T2 ON T1.Id = T2.RepoId	codebase_comments
+SELECT T1.Watchers FROM Repo AS T1 INNER JOIN Solution AS T2 ON T1.Id = T2.RepoId WHERE T2.Id = 338082	codebase_comments
+SELECT COUNT(T2.RepoId) FROM Repo AS T1 INNER JOIN Solution AS T2 ON T1.Id = T2.RepoId WHERE T1.Stars = 189 AND T2.WasCompiled = 0	codebase_comments
+SELECT COUNT(T2.RepoId) FROM Repo AS T1 INNER JOIN Solution AS T2 ON T1.Id = T2.RepoId WHERE T1.Url = 'https://github.com/derickbailey/presentations-and-training.git'	codebase_comments
+SELECT SUM(T2.ProcessedTime) FROM Repo AS T1 INNER JOIN Solution AS T2 ON T1.Id = T2.RepoId WHERE T1.Forks = ( SELECT MAX(Forks) FROM Repo )	codebase_comments
+SELECT CAST(T1.Forks AS REAL) * 100 / T1.Stars FROM Repo AS T1 INNER JOIN Solution AS T2 ON T1.Id = T2.RepoId WHERE T2.Id = 104086	codebase_comments
+SELECT T2.Id FROM Repo AS T1 INNER JOIN Solution AS T2 ON T1.Id = T2.RepoId WHERE T1.Forks = 238	codebase_comments
+SELECT T2.ApiCalls, T1.Path FROM Solution AS T1 INNER JOIN Method AS T2 ON T1.Id = T2.SolutionId WHERE T2.Id = 10	codebase_comments
+SELECT T1.Watchers FROM Repo AS T1 INNER JOIN Solution AS T2 ON T1.Id = T2.RepoId WHERE T2.Path = 'maff_se3ue7US7.sln'	codebase_comments
+SELECT T1.id FROM trains AS T1 INNER JOIN ( SELECT train_id, MAX(position) AS carsNum FROM cars GROUP BY train_id ) AS T2 ON T1.id = T2.train_id WHERE T1.direction = 'east' AND T2.carsNum < 4	trains
+SELECT CAST(COUNT(T1.id) AS REAL) / COUNT(DISTINCT T1.train_id) FROM cars AS T1 INNER JOIN trains AS T2 ON T1.train_id = T2.id WHERE T2.direction = 'east'	trains
+SELECT id FROM trains WHERE direction = 'east'	trains
+SELECT T1.direction FROM trains AS T1 INNER JOIN ( SELECT train_id, MAX(position) AS trailPosi FROM cars GROUP BY train_id ) AS T2 ON T1.id = T2.train_id WHERE T2.trailPosi <= 2	trains
+SELECT T3.Name FROM movie AS T1 INNER JOIN characters AS T2 ON T1.MovieID = T2.MovieID INNER JOIN actor AS T3 ON T3.ActorID = T2.ActorID WHERE T1.Title = 'Batman' AND T2.`Character Name` = 'Joker'	movie
+SELECT T1.Title FROM movie AS T1 INNER JOIN characters AS T2 ON T1.MovieID = T2.MovieID WHERE T2.`Character Name` = 'Dr. Archibald ''Moonlight'' Graham'	movie
+SELECT T2.`Character Name` FROM movie AS T1 INNER JOIN characters AS T2 ON T1.MovieID = T2.MovieID INNER JOIN actor AS T3 ON T3.ActorID = T2.ActorID WHERE T3.Name = 'Tom Cruise' AND T1.Title = 'Born on the Fourth of July'	movie
+SELECT T1.`Character Name` FROM characters AS T1 INNER JOIN actor AS T2 ON T1.ActorID = T2.ActorID WHERE T2.Name = 'Tom Cruise'	movie
+SELECT T3.Name FROM movie AS T1 INNER JOIN characters AS T2 ON T1.MovieID = T2.MovieID INNER JOIN actor AS T3 ON T3.ActorID = T2.ActorID WHERE T1.Title = 'Batman' ORDER BY T3.`Height (Inches)` DESC LIMIT 1	movie
+SELECT T1.`MPAA Rating` FROM movie AS T1 INNER JOIN characters AS T2 ON T1.MovieID = T2.MovieID WHERE T2.`Character Name` = 'Peter Quill'	movie
+SELECT T2.Name FROM characters AS T1 INNER JOIN actor AS T2 ON T1.ActorID = T2.ActorID INNER JOIN movie AS T3 ON T3.MovieID = T1.MovieID WHERE T3.Title = 'Batman' ORDER BY T1.screentime DESC LIMIT 1	movie
+SELECT T2.Name FROM characters AS T1 INNER JOIN actor AS T2 ON T1.ActorID = T2.ActorID WHERE T1.`Character Name` = 'Chanice Kobolowski'	movie
+SELECT T2.`Date of Birth` FROM characters AS T1 INNER JOIN actor AS T2 ON T1.ActorID = T2.ActorID WHERE T1.`Character Name` = 'Sully'	movie
+SELECT T2.Biography FROM characters AS T1 INNER JOIN actor AS T2 ON T1.ActorID = T2.ActorID WHERE T1.`Character Name` = 'Michael Moscovitz'	movie
+SELECT T2.`Height (Inches)` FROM characters AS T1 INNER JOIN actor AS T2 ON T1.ActorID = T2.ActorID WHERE T1.`Character Name` = 'Lurch'	movie
+SELECT T2.`Character Name` FROM movie AS T1 INNER JOIN characters AS T2 ON T1.MovieID = T2.MovieID WHERE T1.Title = 'G.I. Joe: The Rise of Cobra' AND T2.creditOrder = '3'	movie
+SELECT T3.Name FROM movie AS T1 INNER JOIN characters AS T2 ON T1.MovieID = T2.MovieID INNER JOIN actor AS T3 ON T3.ActorID = T2.ActorID WHERE T1.Title = 'American Hustle' AND T2.creditOrder = '2'	movie
+SELECT T3.Name FROM movie AS T1 INNER JOIN characters AS T2 ON T1.MovieID = T2.MovieID INNER JOIN actor AS T3 ON T3.ActorID = T2.ActorID WHERE T1.`Release Date` = '2015-10-26' AND T2.creditOrder = '1'	movie
+SELECT CAST(SUM(CASE WHEN T3.`Birth Country` = 'USA' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T3.`Birth Country`) FROM movie AS T1 INNER JOIN characters AS T2 ON T1.MovieID = T2.MovieID INNER JOIN actor AS T3 ON T3.ActorID = T2.ActorID WHERE T1.Title = 'Mrs. Doubtfire'	movie
+SELECT COUNT(*) FROM movie WHERE `MPAA Rating` = 'PG' AND `Release Date` LIKE '1990-06%'	movie
+SELECT COUNT(*) FROM movie AS T1 INNER JOIN characters AS T2 ON T1.MovieID = T2.MovieID INNER JOIN actor AS T3 ON T3.ActorID = T2.ActorID WHERE T1.Genre = 'Romance' AND T3.Name = 'John Travolta'	movie
+SELECT COUNT(*) FROM movie AS T1 INNER JOIN characters AS T2 ON T1.MovieID = T2.MovieID INNER JOIN actor AS T3 ON T3.ActorID = T2.ActorID WHERE T1.Title = 'Ghost' AND T3.Gender = 'Male' AND T3.`Birth Country` = 'USA'	movie
+SELECT T3.Name FROM movie AS T1 INNER JOIN characters AS T2 ON T1.MovieID = T2.MovieID INNER JOIN actor AS T3 ON T3.ActorID = T2.ActorID WHERE T1.Gross = 136766062 AND T2.`Character Name` = 'Don Altobello' AND T1.Genre = 'Drama'	movie
+SELECT COUNT(TweetID) AS tweet_number FROM twitter WHERE Reach > 1000	social_media
+SELECT COUNT(T1.TweetID) FROM twitter AS T1 INNER JOIN location AS T2 ON T2.LocationID = T1.LocationID WHERE T2.Country = 'Argentina' LIMIT 1	social_media
+SELECT T2.Gender FROM twitter AS T1 INNER JOIN user AS T2 ON T1.UserID = T2.UserID ORDER BY T1.Reach DESC LIMIT 1	social_media
+SELECT T2.City FROM twitter AS T1 INNER JOIN location AS T2 ON T2.LocationID = T1.LocationID WHERE T1.text = 'One of our favorite stories is @FINRA_News''s move to the cloud with AWS Enterprise Support! https://amp.twimg.com/v/991837f1-4815-4edc-a88f-e68ded09a02a'	social_media
+SELECT T2.StateCode FROM twitter AS T1 INNER JOIN location AS T2 ON T2.LocationID = T1.LocationID WHERE T1.TweetID = 'tw-685681052912873473'	social_media
+SELECT Reach FROM twitter WHERE text = 'Happy New Year to all those AWS instances of ours!'	social_media
+SELECT T1.text FROM twitter AS T1 INNER JOIN user AS T2 ON T1.UserID = T2.UserID WHERE T2.Gender = 'Unknown'	social_media
+SELECT COUNT(T1.TweetID) FROM twitter AS T1 INNER JOIN user AS T2 ON T1.UserID = T2.UserID WHERE T2.Gender = 'Male'	social_media
+SELECT T2.Country FROM twitter AS T1 INNER JOIN location AS T2 ON T1.LocationID = T2.LocationID WHERE T1.TweetID = 'tw-682723090279841798'	social_media
+SELECT DISTINCT T1.Lang FROM twitter AS T1 INNER JOIN location AS T2 ON T1.LocationID = T2.LocationID WHERE T2.Country = 'Brazil'	social_media
+SELECT T1.text FROM twitter AS T1 INNER JOIN user AS T2 ON T1.UserID = T2.UserID WHERE T2.Gender = 'Male' AND T1.Lang = 'fr'	social_media
+SELECT DISTINCT T2.City FROM twitter AS T1 INNER JOIN location AS T2 ON T1.LocationID = T2.LocationID WHERE Sentiment = 0	social_media
+SELECT SUM(T3.gpa) / COUNT(T1.student_id) FROM RA AS T1 INNER JOIN prof AS T2 ON T1.prof_id = T2.prof_id INNER JOIN student AS T3 ON T1.student_id = T3.student_id WHERE T2.first_name = 'Ogdon' AND T2.last_name = 'Zywicki'	cs_semester
+SELECT CAST(SUM(CASE WHEN T3.type = 'TPG' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.student_id) FROM RA AS T1 INNER JOIN prof AS T2 ON T1.prof_id = T2.prof_id INNER JOIN student AS T3 ON T1.student_id = T3.student_id WHERE T2.first_name = 'Ogdon' AND T2.last_name = 'Zywicki'	cs_semester
+SELECT COUNT(student_id) FROM student WHERE type = 'UG' AND intelligence = ( SELECT MAX(intelligence) FROM student )	cs_semester
+SELECT T2.gpa FROM RA AS T1 INNER JOIN student AS T2 ON T1.student_id = T2.student_id WHERE T1.salary = 'free'	cs_semester
+SELECT T2.name FROM registration AS T1 INNER JOIN course AS T2 ON T1.course_id = T2.course_id WHERE T1.grade = 'A' AND T2.diff = 1 GROUP BY T2.name ORDER BY COUNT(T1.student_id) DESC LIMIT 1	cs_semester
+SELECT COUNT(course_id) FROM registration WHERE student_id IN ( SELECT student_id FROM student WHERE gpa = ( SELECT MAX(gpa) FROM student ) )	cs_semester
+SELECT T3.name FROM student AS T1 INNER JOIN registration AS T2 ON T1.student_id = T2.student_id INNER JOIN course AS T3 ON T2.course_id = T3.course_id WHERE T2.sat = 1 AND T1.intelligence = 1	cs_semester
+SELECT name, credit FROM course WHERE diff = ( SELECT MIN(diff) FROM course )	cs_semester
+SELECT COUNT(T1.student_id) FROM registration AS T1 INNER JOIN student AS T2 ON T1.student_id = T2.student_id WHERE T1.grade = 'B' AND T2.intelligence = 3	cs_semester
+SELECT T1.name FROM course AS T1 INNER JOIN registration AS T2 ON T1.course_id = T2.course_id WHERE T2.grade = 'D'	cs_semester
+SELECT COUNT(T1.student_id) FROM RA AS T1 INNER JOIN student AS T2 ON T1.student_id = T2.student_id WHERE T2.gpa = 3.5 AND T1.salary = 'low'	cs_semester
+SELECT CAST(SUM(sat) AS REAL) / COUNT(course_id) FROM registration WHERE grade = 'B'	cs_semester
+SELECT T2.f_name, T2.l_name, T1.capability FROM RA AS T1 INNER JOIN student AS T2 ON T2.student_id = T1.student_id INNER JOIN registration AS T3 ON T2.student_id = T3.student_id WHERE T3.grade IS NULL OR T3.grade = ''	cs_semester
+SELECT T3.name FROM student AS T1 INNER JOIN registration AS T2 ON T1.student_id = T2.student_id INNER JOIN course AS T3 ON T2.course_id = T3.course_id WHERE T2.sat = 1 AND T1.type = 'RPG'	cs_semester
+SELECT SUM(CASE WHEN T2.type = 'UG' THEN 1 ELSE 0 END) - SUM(CASE WHEN T2.type = 'RPG' THEN 1 ELSE 0 END) FROM RA AS T1 INNER JOIN student AS T2 ON T1.student_id = T2.student_id WHERE T1.capability < 3	cs_semester
+SELECT COUNT(course_id) FROM course WHERE courseLevel = 'Level_300'	computer_student
