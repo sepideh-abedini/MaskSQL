@@ -4,26 +4,27 @@ import sys
 
 from loguru import logger
 
-from pipe.add_schema import AddFilteredSchema
+from pipe.add_schema import AddSchema, AddFilteredSchema
 from pipe.add_symb_schema import AddSymbolicSchema
-from pipe.attack import Attack, AttackRaw
-from pipe.copy_transformer import CopyTransformer
+from pipe.copy_transformer import CopyTransformer, AddGoldValues
 from pipe.det_mask import AddSymbolicQuestion
 from pipe.detect_entities import DetectValues
 from pipe.exec_acc import ExecAccCalc
-from pipe.gen_gold_mask import GenGoldMask
-from pipe.gen_gold_schema import GenGoldLinks
+from pipe.filer_schema_links import FilterSchemaLinks
+from pipe.filer_value_links import FilterValueLinks
 from pipe.gen_masked_sql import GenerateSymbolicSql
-from pipe.gen_masked_sql_raw import GenerateSymbolicSqlRaw
+from pipe.gen_sql import GenSql
 from pipe.link_schema import LinkSchema
 from pipe.pipeline import Pipeline
+from pipe.processor.analyze import AnalyzeResults
+from pipe.processor.gen_sql_eval import GenSqlEval
 from pipe.processor.limit_list import LimitJson
 from pipe.processor.print_results import PrintResults
-from pipe.processor.privacy_score import PrivacyScore
+from pipe.processor.schema_link_eval import SchemaLinkEval
+from pipe.processor.value_link_eval import ValueLinkEval
 from pipe.rank_schema import RankSchemaResd
 from pipe.repair_sql import RepairSQL
-from pipe.repair_symb_sql import RepairSymbolicSQL, RepairSymbolicSQLRaw
-from pipe.slm_mask import SlmMask, SlmUnmask
+from pipe.repair_symb_sql import RepairSymbolicSQL
 from pipe.symb_table import AddSymbolTable
 from pipe.unmask import AddConcreteSql
 from pipe.value_links import LinkValues
@@ -37,7 +38,7 @@ SLM_MODEL = os.getenv("SLM_MODEL")
 ALT_MODEL = os.getenv("ALT_MODEL")
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 
-out_dir = os.path.join("out", "test", "slm")
+out_dir = os.path.join("out", "test")
 
 if not os.path.exists(out_dir):
     os.makedirs(out_dir, exist_ok=True)
@@ -51,42 +52,34 @@ eval_path = os.path.join(out_dir, "eval.json")
 mask_pipe = [
     LimitJson("limit"),
     RankSchemaResd(tables_path),
+    # RankSchemaItems("schema_items", tables_path),
     AddFilteredSchema(tables_path),
-    GenGoldLinks("gold_links", model=LLM_MODEL),
     AddSymbolTable(tables_path),
     DetectValues("values", model=SLM_MODEL),
     LinkValues("value_links", model=SLM_MODEL),
+
     CopyTransformer("value_links", "filtered_value_links"),
+    # FilterValueLinks("filtered_value_links", model=SLM_MODEL),
+
     LinkSchema("schema_links", model=SLM_MODEL),
     CopyTransformer("schema_links", "filtered_schema_links"),
+    # FilterSchemaLinks("filtered_schema_links", model=SLM_MODEL),
+
+    # AddFilteredSymbolicSchema("symbolic", tables_path),
     AddSymbolicSchema("symbolic", tables_path),
     AddSymbolicQuestion(),
-    Attack("attack", model=LLM_MODEL),
     GenerateSymbolicSql("symbolic", model=LLM_MODEL),
     RepairSymbolicSQL('symbolic', model=LLM_MODEL),
     AddConcreteSql(),
     WrongExecAccOutput(database_path),
     RepairSQL('pred_sql', model=REPAIR_MODEL),
+    # CopyTransformer("pred_sql", "concrete_sql"),
     ExecAccCalc(database_path),
-    PrivacyScore(),
+    # PrintProps(["schema", "query","symbolic.question", "pred_sql", "concrete_sql", "symbolic.sql", "question", "pre_eval.err", "eval.acc",
+    #             "eval.pred_err",
+    #             "pre_eval.pred_res"]),
+    # AnalyzeResults()
     PrintResults()
-]
-
-slm_mask = [
-    LimitJson("limit"),
-    RankSchemaResd(tables_path),
-    AddFilteredSchema(tables_path),
-    GenGoldLinks("gold_links", model=LLM_MODEL),
-    SlmMask("symbolic", model=SLM_MODEL),
-    AttackRaw("attack", model=LLM_MODEL),
-    GenerateSymbolicSqlRaw("symbolic", model=LLM_MODEL),
-    RepairSymbolicSQLRaw('symbolic', model=LLM_MODEL),
-    SlmUnmask("concrete_sql", model=SLM_MODEL),
-    WrongExecAccOutput(database_path),
-    RepairSQL('pred_sql', model=REPAIR_MODEL),
-    ExecAccCalc(database_path),
-    PrivacyScore(),
-    PrintResults(),
 ]
 
 
@@ -98,9 +91,14 @@ async def main():
     logger.add(sys.stderr, level=LOG_LEVEL, colorize=True, enqueue=True,
                format="<green>{time:HH:mm:ss}[{process.id}] | </green><level> {level}: {message}</level>")
 
-    # pipeline = Pipeline(mask_pipe)
-    pipeline = Pipeline(slm_mask)
+    # pipeline = Pipeline(value_link_eval)
+    # pipeline = Pipeline(schema_link_eval)
+    # pipeline = Pipeline(gen_sql_eval)
+    # pipeline = Pipeline(full_gold)
+    pipeline = Pipeline(mask_pipe)
 
+    # pipeline = Pipeline(unmask_pipe_llm)
+    # pipeline = Pipeline(unmask_pipe_slm)
     out_path = await pipeline.run(input_path)
     print("LLM MODEL:", LLM_MODEL)
     print("SLM MODEL:", SLM_MODEL)
