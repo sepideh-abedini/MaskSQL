@@ -77,6 +77,7 @@ class AddSymbolicQuestion(JsonListTransformer):
         question = row['question']
         symbol_table = row['symbolic']['to_symbol']
         updated_schema_links = self.add_tables_of_columns(schema_links, filtered_schema_links)
+        masked_terms = []
 
         symbolic_question = question
         masked = 0
@@ -97,6 +98,7 @@ class AddSymbolicQuestion(JsonListTransformer):
                 symbolic_question = self.symbolize_value(symbolic_question, question_term, schema_item,
                                                          updated_schema_links,
                                                          filtered_value_links, symbol_table)
+                masked_terms.append(question_term)
                 masked += 1
             except Exception as e:
                 logger.error(f"Failed to mask {question_term}:{schema_item}, error={e} ")
@@ -104,6 +106,7 @@ class AddSymbolicQuestion(JsonListTransformer):
         for question_term, schema_items in updated_schema_links.items():
             try:
                 symbolic_question = self.symbolize_term(symbolic_question, question_term, schema_items, symbol_table)
+                masked_terms.append(question_term)
                 masked += 1
             except Exception as e:
                 logger.error(f"Failed to mask {question_term}:{schema_items}, error={e} ")
@@ -111,7 +114,8 @@ class AddSymbolicQuestion(JsonListTransformer):
             {
                 "question": symbolic_question,
                 "to_value": self.value_dict,
-                "masked": masked
+                "masked": masked,
+                "masked_terms": masked_terms
             }
         )
         return row

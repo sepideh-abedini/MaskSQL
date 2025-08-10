@@ -7,6 +7,8 @@ from loguru import logger
 from pipe.detect_values_prompts.prompt_processor import PromptProcessor
 from pipe.gen_sql import extract_sql
 from pipe.sql_repair_prompts.v3 import REPAIR_SQL_PROMPT_V3
+from pipe.sql_repair_prompts.v4 import REPAIR_SQL_PROMPT_V4
+from pipe.sql_repair_prompts.v5 import REPAIR_SQL_PROMPT_V5
 
 
 # from pipe.sql_repair_prompts.v4 import REPAIR_SQL_PROMPT_V4
@@ -28,9 +30,7 @@ class RepairSQL(PromptProcessor):
         err = row['pre_eval']['err']
         pred_res = row['pre_eval']['pred_res']
         exec_res = f"Execution Result: {pred_res}, Execution Error: {err}"
-        examples = []
-        prompt = REPAIR_SQL_PROMPT_V3.format(question=question, schema=schema, sql=sql, exec_res=exec_res,
-                                             examples=examples)
+        prompt = REPAIR_SQL_PROMPT_V5.format(question=question, schema=schema, sql=sql, exec_res=err)
         return prompt
 
     async def _process_row(self, row):

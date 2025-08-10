@@ -12,3 +12,12 @@ class DataPrinter(JsonListProcessor, ABC):
         output_file = input_file
         await super().run(input_file)
         return output_file
+
+
+class CustomPrinter(DataPrinter):
+    async def _process_row(self, row: Dict) -> Dict:
+        print("-" * 10)
+        print("ORIG:", row['schema_links'])
+        # print("REP:", row['repaired_schema_links'])
+        print("-" * 10)
+        return row

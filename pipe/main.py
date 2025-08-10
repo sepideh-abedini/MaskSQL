@@ -11,7 +11,6 @@ from pipe.copy_transformer import CopyTransformer
 from pipe.det_mask import AddSymbolicQuestion
 from pipe.detect_entities import DetectValues
 from pipe.exec_acc import ExecAccCalc
-from pipe.gen_gold_mask import GenGoldMask
 from pipe.gen_gold_schema import GenGoldLinks
 from pipe.gen_masked_sql import GenerateSymbolicSql
 from pipe.gen_masked_sql_raw import GenerateSymbolicSqlRaw
@@ -20,6 +19,7 @@ from pipe.pipeline import Pipeline
 from pipe.processor.limit_list import LimitJson
 from pipe.processor.print_results import PrintResults
 from pipe.processor.privacy_score import PrivacyScore
+from pipe.processor.schema_link_score import SchemaLinkScore
 from pipe.rank_schema import RankSchemaResd
 from pipe.repair_sql import RepairSQL
 from pipe.repair_symb_sql import RepairSymbolicSQL, RepairSymbolicSQLRaw
@@ -37,7 +37,7 @@ SLM_MODEL = os.getenv("SLM_MODEL")
 ALT_MODEL = os.getenv("ALT_MODEL")
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 
-out_dir = os.path.join("out", "test", "slm")
+out_dir = os.path.join("out", "ablation", "resd")
 
 if not os.path.exists(out_dir):
     os.makedirs(out_dir, exist_ok=True)
@@ -59,6 +59,7 @@ mask_pipe = [
     CopyTransformer("value_links", "filtered_value_links"),
     LinkSchema("schema_links", model=SLM_MODEL),
     CopyTransformer("schema_links", "filtered_schema_links"),
+    # RepairSchemaLinks("repaired_schema_links", model=SLM_MODEL),
     AddSymbolicSchema("symbolic", tables_path),
     AddSymbolicQuestion(),
     Attack("attack", model=LLM_MODEL),
@@ -66,8 +67,9 @@ mask_pipe = [
     RepairSymbolicSQL('symbolic', model=LLM_MODEL),
     AddConcreteSql(),
     WrongExecAccOutput(database_path),
-    RepairSQL('pred_sql', model=REPAIR_MODEL),
+    RepairSQL('pred_sql', model=SLM_MODEL),
     ExecAccCalc(database_path),
+    SchemaLinkScore(),
     PrivacyScore(),
     PrintResults()
 ]
@@ -98,14 +100,14 @@ async def main():
     logger.add(sys.stderr, level=LOG_LEVEL, colorize=True, enqueue=True,
                format="<green>{time:HH:mm:ss}[{process.id}] | </green><level> {level}: {message}</level>")
 
-    # pipeline = Pipeline(mask_pipe)
-    pipeline = Pipeline(slm_mask)
+    pipeline = Pipeline(mask_pipe)
+    # pipeline = Pipeline(slm_mask)
 
     out_path = await pipeline.run(input_path)
     print("LLM MODEL:", LLM_MODEL)
     print("SLM MODEL:", SLM_MODEL)
-    print("LINK MODEL:", LINK_MODEL)
-    print("REPAIR MODEL:", REPAIR_MODEL)
+    # print("LINK MODEL:", LINK_MODEL)
+    # print("REPAIR MODEL:", REPAIR_MODEL)
 
 
 if __name__ == '__main__':

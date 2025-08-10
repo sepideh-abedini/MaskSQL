@@ -105,4 +105,9 @@ Now generate the JSON object of mapping for the following question, schema items
 Question: {question}
 Schema items: {schema_items}
 Value List: {value_List}
+
+Iterate through each key,value pair of the answer and make sure that:
+- MAKE SURE THAT EACH KEY OF THE MAPPING SHOULD BE A TERM OF THE QUESTION
+- MAKE SURE THAT EACH VALUE OF THE MAPPING SHOULD BE A VALID SCHEMA ITEM INCLUDED IN THE GIVEN LIST OF SCHEMA ITEMS 
+- MAKE SURE THAT EACH KEY BE MINIMAL, IF ANY WORD CAN BE DELETED WHILE THE RELATION STILL HOLDS, IT SHOULD BE REMOVED
 """

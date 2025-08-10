@@ -1,5 +1,5 @@
 from pipe.detect_values_prompts.prompt_processor import PromptProcessor
-from pipe.llm_util import extract_json
+from pipe.llm_util import extract_object
 from pipe.schema_filter_prompts.v2 import FILTER_SCHEMA_LINKS_PROMPT_V2
 
 CONCEPTS = [
@@ -11,7 +11,7 @@ CONCEPTS = [
 
 class FilterSchemaLinks(PromptProcessor):
     def _process_output(self, row, output):
-        return extract_json(output)
+        return extract_object(output)
 
     def _get_prompt(self, row):
         schema_links = row['schema_links']

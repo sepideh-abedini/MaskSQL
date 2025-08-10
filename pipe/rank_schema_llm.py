@@ -1,5 +1,5 @@
 from pipe.detect_values_prompts.prompt_processor import PromptProcessor
-from pipe.llm_util import extract_json
+from pipe.llm_util import extract_object
 from pipe.rank_schema_prompts.v1 import RANK_SCHEMA_ITEMS_V1
 from pipe.schema_repo import DatabaseSchemaRepo
 
@@ -10,7 +10,7 @@ class RankSchemaItems(PromptProcessor):
         self.schema_repo = DatabaseSchemaRepo(tables_path)
 
     def _process_output(self, row, output):
-        return extract_json(output)
+        return extract_object(output)
 
     def extract_schema_items(self, row):
         db_id = row['db_id']

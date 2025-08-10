@@ -1,5 +1,6 @@
 from pipe.processor.list_processor import JsonListProcessor
 from pipe.processor.printer import DataPrinter
+from pipe.processor.schema_link_score import similar
 
 
 def print_color(text, color="green"):
@@ -18,14 +19,15 @@ class PrintResults(DataPrinter):
         super().__init__()
         self.score = 0
         self.pre_score = 0
-        self.masked = 0
         self.total = 0
         self.total_toks = 0
+        self.total_gold_masks = 0
+        self.masks = 0
 
     def _post_run(self):
         print(f"PreScore: {self.pre_score}/{self.total}")
-        print(f"Score: {self.score}/{self.total}")
-        print(f"Masked: {self.masked}/{self.total}")
+        print(f"Accuracy: {self.score}/{self.total}")
+        print(f"Masked: {self.masks}/{self.total_gold_masks}")
         # print(f"Toks: {self.total_toks}/{self.total}")
 
     async def _process_row(self, row):
@@ -35,9 +37,22 @@ class PrintResults(DataPrinter):
         self.score += exec_acc
         pre_score = row['pre_eval']['acc']
         self.pre_score += pre_score
-        # self.masked += row['symbolic']['masked']
-        # if exec_acc == 1:
-        #     return
+        masked_terms = row['symbolic']['masked_terms']
+        gold_links = row['gold_links']
+        pred_links = row['filtered_schema_links']
+        pred_values = row['filtered_value_links']
+        pred_keys = list(pred_links.keys()) + list(pred_values.keys())
+        masks = 0
+        for q_term, schema_item in gold_links.items():
+            for p_term in masked_terms:
+                if similar(p_term, q_term):
+                    masks += 1
+        self.masks += masks
+        self.total_gold_masks += len(gold_links.keys())
+
+        if exec_acc == 1:
+            return
+        return row
         print(f"\nEntry #{self.total}" + "-" * 100)
         print(f"EXEC ACC: {exec_acc}")
         # return

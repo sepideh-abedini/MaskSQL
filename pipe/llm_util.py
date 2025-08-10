@@ -1,3 +1,4 @@
+import ast
 import json
 import os
 import re
@@ -65,5 +66,24 @@ def extract_json(text: str):
             json_res = json.loads(text)
         return json_res
     except Exception as e:
-        logger.error(f"Failed to extract json from: {text}, error={e}")
-        return {}
+        logger.warning(f"Failed to extract json from: {text}, error={e}")
+        return None
+
+
+def eval_literal(text: str):
+    try:
+        obj = ast.literal_eval(text)
+        return obj
+    except Exception as e:
+        logger.warning(f"Failed eval literal: {text}, error={e}")
+        return None
+
+
+def extract_object(text: str):
+    obj = extract_json(text)
+    if obj is None:
+        obj = eval_literal(text)
+    if obj is None:
+        logger.error(f"Failed to extract object: {text}")
+        obj = None
+    return obj

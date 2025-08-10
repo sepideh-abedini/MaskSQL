@@ -21,8 +21,11 @@ def extract_sql(output):
     elif "```" in output:
         res = re.findall(r"```([\s\S]*?)```", output)
         sql = res[0]
+    elif "`" in output:
+        res = re.findall(r"`([\s\S]*?)`", output)
+        sql = res[0]
     else:
-        logger.error(f"Failed to extract final answer from output: {output}")
+        logger.error(f"Failed to extract sql from output: {output}")
     sql = sql.strip()
     sql = sql.replace("\n", " ")
     return sql
@@ -31,7 +34,7 @@ def extract_sql(output):
 class GenSql(PromptProcessor):
 
     def _process_output(self, row, output):
-        return  extract_sql(output)
+        return extract_sql(output)
 
     def _get_prompt(self, row):
         question = row['question']

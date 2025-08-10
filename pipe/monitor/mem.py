@@ -29,6 +29,6 @@ async def track_memory_async(coro, *args, interval: float = 1, **kwargs):
 
     avg_mem = sum(mem_usage) / len(mem_usage) if mem_usage else 0
     peak_mem = max(mem_usage) if mem_usage else 0
-    print("MEM USAGE LEN: ", len(mem_usage))
-    print("MEM USAGE SUM: ", sum(mem_usage))
+    # print("MEM USAGE LEN: ", len(mem_usage))
+    # print("MEM USAGE SUM: ", sum(mem_usage))
     return result, avg_mem, peak_mem
