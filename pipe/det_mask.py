@@ -83,6 +83,15 @@ class AddSymbolicQuestion(JsonListTransformer):
 
         value_links = row['value_links']
         filtered_value_links = row['filtered_value_links']
+
+        if isinstance(value_links, list) or isinstance(value_links, str):
+            logger.error(f"Invalid value links: {value_links}")
+            value_links = dict()
+
+        if isinstance(filtered_value_links, list) or isinstance(filtered_value_links, str):
+            logger.error(f"Invalid value links: {filtered_value_links}")
+            filtered_value_links = dict()
+
         for question_term, schema_item in value_links.items():
             try:
                 symbolic_question = self.symbolize_value(symbolic_question, question_term, schema_item,

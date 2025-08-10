@@ -43,7 +43,7 @@ class PromptProcessor(JsonListTransformer):
         res, toks = await self._prompt_llm(row, prompt)
         with open(self.response_file, "a") as f:
             f.write(f"######################\n {res}\n")
-        row['total_toks'] += toks
+        # row['total_toks'] += toks
         if self.prop_name in row:
             row[self.prop_name].update(res)
         else:

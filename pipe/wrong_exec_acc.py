@@ -20,22 +20,24 @@ class WrongExecAccOutput(JsonListTransformer):
         try:
             gold_res, _ = self.dbf.exec_query_sync(db_id, gold)
             pred_res, pred_err = self.dbf.exec_query_sync(db_id, pred)
-            if pred_res is not None and len(pred_res) > 100:
-                logger.debug(f"Pred results was limited: original size = {len(pred_res)}")
-                pred_res = pred_res[:100]
             if gold_res == pred_res:
                 acc = 1
             else:
                 acc = 0
-            if pred_err is not None:
-                err = pred_err
-            elif acc == 0:
-                err = "The predicted SQL is executable but the execution result is different from the gold execution result"
-            else:
-                err = None
+            if pred_res is not None and len(pred_res) > 5:
+                logger.debug(f"Pred results was limited: original size = {len(pred_res)}")
+                pred_res = pred_res[:5]
+            if pred_err is None:
+                pred_err = ""
+            # if pred_err is not None:
+            #     err = pred_err
+            # elif acc == 0:
+            #     err = "The predicted SQL is executable but the execution result is different from the gold execution result"
+            # else:
+            #     err = None
             row["pre_eval"] = {
                 "acc": acc,
-                "err": err,
+                "err": pred_err,
                 "pred_res": pred_res
             }
             return row
