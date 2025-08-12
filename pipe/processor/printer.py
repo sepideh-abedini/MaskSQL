@@ -17,7 +17,8 @@ class DataPrinter(JsonListProcessor, ABC):
 class CustomPrinter(DataPrinter):
     async def _process_row(self, row: Dict) -> Dict:
         print("-" * 10)
-        print("ORIG:", row['schema_links'])
+        print("Question:", row['question'])
+        print("Masked:", row['symbolic']['question'])
         # print("REP:", row['repaired_schema_links'])
         print("-" * 10)
         return row

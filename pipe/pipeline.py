@@ -13,8 +13,12 @@ class Pipeline:
 
     async def __run_internal(self, input_file):
         tmp_file = input_file
+        timer = Timer()
+        timer.start()
         for stage in self.stages:
+            print(f"Starting Stage: {stage.name}")
             tmp_file = await stage.run(tmp_file)
+            print(f"Done Stage: {stage.name}, time={timer.lap()}")
         return tmp_file
 
     async def run(self, input_file):

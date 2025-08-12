@@ -37,3 +37,24 @@ class AddSymbolTable(JsonListTransformer):
             "to_symbol": rev_table
         }
         return row
+
+
+class AddValueSymbolTable(JsonListTransformer):
+
+    def __init__(self, tables_path):
+        super().__init__(True)
+        self.schema_repo = DatabaseSchemaRepo(tables_path)
+
+    async def _process_row(self, row):
+        vid = 1
+        value_links = row['value_links']
+        symbol_table = row['symbolic']['to_symbol']
+        to_value = dict()
+        for value in value_links.keys():
+            symbol = f"[V{vid}]"
+            symbol_table[value] = symbol
+            to_value[symbol] = value
+            vid += 1
+        row['symbolic']['to_symbol'] = symbol_table
+        row['symbolic']['to_value'] = to_value
+        return row

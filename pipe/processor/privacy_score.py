@@ -39,7 +39,7 @@ class PrivacyScore(DataPrinter):
         total_masks = len(masked_terms)
         self.count += 1
         self.leaked += leaked
-        self.score += leaked / total_masks
+        # self.score += leaked / total_masks
         self.total_masked += total_masks
         # self.leakage += float(leakage_score / len(masked_terms))
 

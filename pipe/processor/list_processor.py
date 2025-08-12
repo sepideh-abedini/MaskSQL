@@ -20,9 +20,10 @@ class JsonListProcessor(ABC):
     def set_prop(self, row, prop, value):
         props = prop.split(".")
         d = row
-        for p in props:
+        for p in props[:-1]:
             d = d[p]
-        return d
+        d[props[-1]] = value
+        return row
 
     @property
     def name(self):

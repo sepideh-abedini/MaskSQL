@@ -51,7 +51,7 @@ mask_pipe = [
     LimitJson("limit"),
     RankSchemaResd(tables_path),
     AddFilteredSchema(tables_path),
-    GenGoldLinks("gold_links", model=LLM_MODEL),
+    # GenGoldLinks("gold_links", model=LLM_MODEL),
     CopyTransformer("question", "bar"),
     AddSymbolTable(tables_path),
     DetectValues("values", model=SLM_MODEL),
@@ -93,7 +93,7 @@ slm_mask = [
     WrongExecAccOutput(database_path),
     RepairSQL('pred_sql', model=REPAIR_MODEL),
     ExecAccCalc(database_path),
-    PrivacyScore(),
+    # PrivacyScore(),
     PrintResults(),
 ]
 

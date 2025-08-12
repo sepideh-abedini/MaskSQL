@@ -6,7 +6,7 @@ from pipe.processor.list_transformer import JsonListTransformer
 from pipe.utils import replace_str
 
 
-class AddSymbolicQuestion(JsonListTransformer):
+class AddMaskedTermsDeterministic(JsonListTransformer):
     def __init__(self):
         super().__init__(force=True)
 
@@ -93,11 +93,7 @@ class AddSymbolicQuestion(JsonListTransformer):
             logger.error(f"Invalid value links: {filtered_value_links}")
             filtered_value_links = dict()
 
-        sorted_value_terms = sorted(value_links.keys(), key=len, reverse=True)
-        sorted_schema_terms = sorted(updated_schema_links.keys(), key=len, reverse=True)
-
-        for question_term in sorted_value_terms:
-            schema_item = value_links[question_term]
+        for question_term, schema_item in value_links.items():
             try:
                 symbolic_question = self.symbolize_value(symbolic_question, question_term, schema_item,
                                                          updated_schema_links,
@@ -107,8 +103,7 @@ class AddSymbolicQuestion(JsonListTransformer):
             except Exception as e:
                 logger.error(f"Failed to mask {question_term}:{schema_item}, error={e} ")
 
-        for question_term in sorted_schema_terms:
-            schema_items = updated_schema_links[question_term]
+        for question_term, schema_items in updated_schema_links.items():
             try:
                 symbolic_question = self.symbolize_term(symbolic_question, question_term, schema_items, symbol_table)
                 masked_terms.append(question_term)
@@ -117,9 +112,6 @@ class AddSymbolicQuestion(JsonListTransformer):
                 logger.error(f"Failed to mask {question_term}:{schema_items}, error={e} ")
         row['symbolic'].update(
             {
-                "question": symbolic_question,
-                "to_value": self.value_dict,
-                "masked": masked,
                 "masked_terms": masked_terms
             }
         )

@@ -21,6 +21,7 @@ class AddConcreteSql(JsonListTransformer):
         value_table = row['symbolic']['to_value']
 
         symbolic_sql = row['symbolic']['repaired_sql']
+        masked_term = dict()
 
         for symbol, name in reverse_dict.items():
             if "." in symbol:

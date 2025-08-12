@@ -56,3 +56,20 @@ class AddFilteredSchema(JsonListTransformer):
         filtered_schema = filter_schema(schema, schema_items)
         row['schema'] = filtered_schema.to_yaml()
         return row
+
+
+class AddSchemaItems(JsonListTransformer):
+    def __init__(self, tables_path):
+        super().__init__(force=True)
+        self.schema_repo = DatabaseSchemaRepo(tables_path)
+
+    async def _process_row(self, row):
+        schema = self.schema_repo.dbs[row['db_id']]
+        schema_items = []
+        for table, columns in schema.tables.items():
+            schema_items.append(f"TABLE:[{table}]")
+            for col, col_data in columns.items():
+                schema_items.append(f"COLUMN:[{table}][{col}]")
+            schema_items.append(f"COLUMN:[{table}][*]")
+        row['schema_items'] = schema_items
+        return row

@@ -17,3 +17,5 @@ __pycache__
 *.png
 ./*.json
 *.csv
+logs
+*.log

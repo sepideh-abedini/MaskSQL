@@ -23,11 +23,14 @@ class PrintResults(DataPrinter):
         self.total_toks = 0
         self.total_gold_masks = 0
         self.masks = 0
+        self.leakage = 0
+        self.total_masks = 0
 
     def _post_run(self):
         print(f"PreScore: {self.pre_score}/{self.total}")
         print(f"Accuracy: {self.score}/{self.total}")
         print(f"Masked: {self.masks}/{self.total_gold_masks}")
+        print(f"Leak: {self.leakage}/{self.total_masks}")
         # print(f"Toks: {self.total_toks}/{self.total}")
 
     async def _process_row(self, row):
@@ -35,20 +38,27 @@ class PrintResults(DataPrinter):
         # self.total_toks += row['total_toks']
         exec_acc = row['eval']['acc']
         self.score += exec_acc
-        pre_score = row['pre_eval']['acc']
-        self.pre_score += pre_score
+        # pre_score = row['pre_eval']['acc']
+        # self.pre_score += pre_score
         masked_terms = row['symbolic']['masked_terms']
         gold_links = row['gold_links']
-        pred_links = row['filtered_schema_links']
-        pred_values = row['filtered_value_links']
-        pred_keys = list(pred_links.keys()) + list(pred_values.keys())
+        # pred_links = row['filtered_schema_links']
+        # pred_values = row['filtered_value_links']
+        # pred_keys = list(pred_links.keys()) + list(pred_values.keys())
         masks = 0
         for q_term, schema_item in gold_links.items():
             for p_term in masked_terms:
                 if similar(p_term, q_term):
                     masks += 1
+
+        self.total_masks += len(masked_terms)
         self.masks += masks
         self.total_gold_masks += len(gold_links.keys())
+
+        guess = row['attack']
+        for term in masked_terms:
+            if term.lower() in guess.lower():
+                self.leakage += 1
 
         if exec_acc == 1:
             return

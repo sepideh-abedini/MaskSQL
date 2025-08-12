@@ -4,24 +4,17 @@ import sys
 
 from loguru import logger
 
-from pipe.add_schema import AddSchema, AddFilteredSchema
+from pipe.add_schema import AddFilteredSchema
 from pipe.add_symb_schema import AddSymbolicSchema
-from pipe.copy_transformer import CopyTransformer, AddGoldValues
+from pipe.copy_transformer import CopyTransformer
 from pipe.det_mask import AddSymbolicQuestion
 from pipe.detect_entities import DetectValues
 from pipe.exec_acc import ExecAccCalc
-from pipe.filer_schema_links import FilterSchemaLinks
-from pipe.filer_value_links import FilterValueLinks
 from pipe.gen_masked_sql import GenerateSymbolicSql
-from pipe.gen_sql import GenSql
 from pipe.link_schema import LinkSchema
 from pipe.pipeline import Pipeline
-from pipe.processor.analyze import AnalyzeResults
-from pipe.processor.gen_sql_eval import GenSqlEval
 from pipe.processor.limit_list import LimitJson
 from pipe.processor.print_results import PrintResults
-from pipe.processor.schema_link_eval import SchemaLinkEval
-from pipe.processor.value_link_eval import ValueLinkEval
 from pipe.rank_schema import RankSchemaResd
 from pipe.repair_sql import RepairSQL
 from pipe.repair_symb_sql import RepairSymbolicSQL

@@ -34,7 +34,8 @@ async def send_prompt(prompt, model=os.getenv("OPENAI_MODEL")) -> Tuple[str, str
         project=os.getenv("OPENAI_PROJ_ID"),
         timeout=int(os.getenv("OPENAI_TIMEOUT", 60)),
     )
-
+    logger.debug("#" * 150)
+    logger.debug(f"Prompt:\n{prompt}")
     response = await client.chat.completions.create(
         model=model,
         messages=[
@@ -51,7 +52,9 @@ async def send_prompt(prompt, model=os.getenv("OPENAI_MODEL")) -> Tuple[str, str
     usage = 0
     if response.usage:
         usage = response.usage.total_tokens
-    return response.choices[0].message.content, usage
+    content = response.choices[0].message.content
+    logger.debug(f"Response:\n*****\n{content}\n*****\n")
+    return content, usage
 
 
 def extract_json(text: str):

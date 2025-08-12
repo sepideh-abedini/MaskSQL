@@ -4,26 +4,33 @@ import sys
 
 from loguru import logger
 
-from pipe.add_schema import AddFilteredSchema
+from pipe.add_masked_terms import AddMaskedTerms
+from pipe.add_schema import AddFilteredSchema, AddSchema, AddSchemaItems
 from pipe.add_symb_schema import AddSymbolicSchema
+from pipe.add_value_links_from_schema_links import AddValueLinksFromSchemaLinks
 from pipe.attack import Attack, AttackRaw
 from pipe.copy_transformer import CopyTransformer
 from pipe.det_mask import AddSymbolicQuestion
-from pipe.detect_entities import DetectValues
+from pipe.detect_entities import DetectValues, DetectValuesDummy
 from pipe.exec_acc import ExecAccCalc
 from pipe.gen_gold_schema import GenGoldLinks
 from pipe.gen_masked_sql import GenerateSymbolicSql
 from pipe.gen_masked_sql_raw import GenerateSymbolicSqlRaw
 from pipe.link_schema import LinkSchema
+from pipe.link_schema_and_value import LinkSchemaAndValue
 from pipe.pipeline import Pipeline
 from pipe.processor.limit_list import LimitJson
 from pipe.processor.print_results import PrintResults
+from pipe.processor.printer import CustomPrinter
 from pipe.processor.privacy_score import PrivacyScore
+from pipe.processor.schema_link_score import SchemaLinkScore
 from pipe.rank_schema import RankSchemaResd
 from pipe.repair_sql import RepairSQL
 from pipe.repair_symb_sql import RepairSymbolicSQL, RepairSymbolicSQLRaw
 from pipe.slm_mask import SlmMask, SlmUnmask
-from pipe.symb_table import AddSymbolTable
+from pipe.slm_mask_for_det_unmask import SlmMaskWithSymbolTable
+from pipe.slm_unmask_repair import SlmUnmaskAndRepair
+from pipe.symb_table import AddSymbolTable, AddValueSymbolTable
 from pipe.unmask import AddConcreteSql
 from pipe.value_links import LinkValues
 from pipe.wrong_exec_acc import WrongExecAccOutput
@@ -36,7 +43,7 @@ SLM_MODEL = os.getenv("SLM_MODEL")
 ALT_MODEL = os.getenv("ALT_MODEL")
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 
-out_dir = os.path.join("out", "ablation", "1_perfect_base_new")
+out_dir = os.path.join("out", "paper", "1_test")
 
 if not os.path.exists(out_dir):
     os.makedirs(out_dir, exist_ok=True)
@@ -51,33 +58,11 @@ mask_pipe = [
     LimitJson("limit"),
     RankSchemaResd(tables_path),
     AddFilteredSchema(tables_path),
-    GenGoldLinks("gold_links", model=LLM_MODEL),
-    CopyTransformer("question", "bar"),
     AddSymbolTable(tables_path),
-    DetectValues("values", model=SLM_MODEL),
-    LinkValues("value_links", model=SLM_MODEL),
-    CopyTransformer("value_links", "filtered_value_links"),
-    # AddValueSymbolTable(tables_path),
-    LinkSchema("schema_links", model=SLM_MODEL),
     CopyTransformer("schema_links", "filtered_schema_links"),
     AddSymbolicSchema("symbolic", tables_path),
     AddSymbolicQuestion(),
-    # SlmMaskWithSymbolTable("symbolic", model=SLM_MODEL),
-    Attack("attack", model=LLM_MODEL),
-    GenerateSymbolicSql("symbolic", model=LLM_MODEL),
-    # CopyTransformer("symbolic.sql", "symbolic.repaired_sql"),
-    RepairSymbolicSQL('symbolic', model=LLM_MODEL),
-    # SlmUnmaskAndRepair("pred_sql", model=SLM_MODEL),
-    AddConcreteSql(),
-    WrongExecAccOutput(database_path),
-    RepairSQL('pred_sql', model=SLM_MODEL),
-    # CopyTransformer('concrete_sql', 'pred_sql'),
-    ExecAccCalc(database_path),
-    # AddMaskedTerms("masked_terms", model=LLM_MODEL),
-    # CopyTransformer("masked_terms", "symbolic.masked_terms"),
-    # SchemaLinkScore(),
-    # PrivacyScore(),
-    PrintResults()
+    CustomPrinter()
 ]
 
 slm_mask = [

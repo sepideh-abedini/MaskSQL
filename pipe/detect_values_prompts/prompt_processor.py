@@ -51,8 +51,8 @@ class PromptProcessor(JsonListTransformer):
         return row
 
     async def run(self, input_file):
-        self.prompt_file = f"out/logs/{self.name}.prompt.txt"
-        self.response_file = f"out/logs/{self.name}.response.txt"
+        self.prompt_file = f"logs/{self.name}.prompt.txt"
+        self.response_file = f"logs/{self.name}.response.txt"
         open(self.prompt_file, "w").close()
         open(self.response_file, "w").close()
         output_file = await super().run(input_file)
