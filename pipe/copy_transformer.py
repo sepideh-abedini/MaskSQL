@@ -16,6 +16,17 @@ class CopyTransformer(JsonListTransformer):
         self.set_prop(row, self.dst, src_value)
         return row
 
+class DeleteProp(JsonListTransformer):
+    def __init__(self, prop):
+        super().__init__(force=True)
+        self.prop = prop
+
+    async def _process_row(self, row):
+        del row[self.prop]
+        return row
+
+
+
 
 class CopyFromPrevStage(JsonListTransformer):
 

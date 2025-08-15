@@ -1,4 +1,3 @@
-from pipe.processor.list_processor import JsonListProcessor
 from pipe.processor.printer import DataPrinter
 from pipe.processor.schema_link_score import similar
 
@@ -37,9 +36,14 @@ class PrintResults(DataPrinter):
         self.total += 1
         # self.total_toks += row['total_toks']
         exec_acc = row['eval']['acc']
+        if exec_acc == 0:
+            print(f"#{row['question_id']}")
+            print(f"Q: {row['question']}")
+
         self.score += exec_acc
         # pre_score = row['pre_eval']['acc']
         # self.pre_score += pre_score
+        return
         masked_terms = row['symbolic']['masked_terms']
         gold_links = row['gold_links']
         # pred_links = row['filtered_schema_links']
@@ -56,9 +60,20 @@ class PrintResults(DataPrinter):
         self.total_gold_masks += len(gold_links.keys())
 
         guess = row['attack']
+        leakage = 0
+        leak_terms = []
         for term in masked_terms:
             if term.lower() in guess.lower():
-                self.leakage += 1
+                leakage += 1
+                leak_terms.append(term)
+        # if leakage > 0:
+        #     print("LEAK:")
+        #     print("Masked:", row['symbolic']['question'])
+        #     print("Original:", row['question'])
+        #     print("Guess:", guess)
+        #     print("Leaks:", leak_terms)
+
+        self.leakage += leakage
 
         if exec_acc == 1:
             return

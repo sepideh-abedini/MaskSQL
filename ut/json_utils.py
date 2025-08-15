@@ -10,7 +10,7 @@ def read_json(path):
 
 def write_json(path, data):
     with open(path, 'w') as f:
-        f.write(data)
+        f.write(json.dumps(data, indent=4))
 
 
 @dataclass

@@ -5,8 +5,8 @@ from pipe.schema_repo import DatabaseSchemaRepo
 
 
 class RankSchemaItems(PromptProcessor):
-    def __init__(self, prop_name, tables_path):
-        super().__init__(prop_name)
+    def __init__(self, prop_name, tables_path, model):
+        super().__init__(prop_name, model=model)
         self.schema_repo = DatabaseSchemaRepo(tables_path)
 
     def _process_output(self, row, output):

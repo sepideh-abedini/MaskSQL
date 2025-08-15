@@ -10,11 +10,13 @@ class ExecAccCalc(JsonListTransformer):
     def __init__(self, database_dir):
         super().__init__(False)
         self.dbf = SqliteFacade(database_dir)
+        self.count = 0
 
     async def _process_row(self, row):
         gold = row['query']
         pred = row['pred_sql']
         db_id = row['db_id']
+        self.count += 1
         try:
             gold_res, _ = self.dbf.exec_query_sync(db_id, gold)
             pred_res, err = self.dbf.exec_query_sync(db_id, pred)
@@ -28,6 +30,7 @@ class ExecAccCalc(JsonListTransformer):
                 "pred": pred_res,
                 "pred_err": err
             }
+            # print(f"SQL Executed: {self.count}")
             return row
         except Exception as e:
             print(e)

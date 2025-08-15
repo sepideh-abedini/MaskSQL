@@ -22,3 +22,13 @@ class CustomPrinter(DataPrinter):
         # print("REP:", row['repaired_schema_links'])
         print("-" * 10)
         return row
+
+
+class LambdaPrinter(DataPrinter):
+    def __init__(self, printer):
+        super().__init__()
+        self.printer = printer
+
+    async def _process_row(self, row: Dict) -> Dict:
+        self.printer(row)
+        return row

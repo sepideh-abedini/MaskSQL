@@ -1,4 +1,5 @@
 import os
+import time
 from abc import abstractmethod
 from json import JSONDecodeError
 
@@ -40,7 +41,10 @@ class PromptProcessor(JsonListTransformer):
         prompt = self._get_prompt(row)
         with open(self.prompt_file, "a") as f:
             f.write(f"######################\n {prompt}\n")
+        row['created'] = int(time.time())
         res, toks = await self._prompt_llm(row, prompt)
+        row['finished'] = int(time.time())
+        row['toks'] = toks
         with open(self.response_file, "a") as f:
             f.write(f"######################\n {res}\n")
         # row['total_toks'] += toks

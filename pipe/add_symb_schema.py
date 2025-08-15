@@ -8,8 +8,8 @@ from pipe.schema_repo import DatabaseSchemaRepo, DatabaseSchema
 
 class AddSymbolicSchema(JsonListTransformer):
 
-    def __init__(self, prop_name, tables_path):
-        super().__init__(prop_name)
+    def __init__(self, tables_path):
+        super().__init__()
         self.schema_repo = DatabaseSchemaRepo(tables_path)
 
     async def _process_row(self, row):
