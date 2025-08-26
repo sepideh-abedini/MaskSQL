@@ -15,6 +15,7 @@ Schema items should be valid with respect to the given database schema.
 
 Output Rules:
 - Return a list of found items.
+- Look for typos and other mistakes in the question, user might meant to reference a table or column but having a typo in the question
 
 Example:
 NL Text: "What is the release_title of the music that was released by Ron Hunt in 1979 that was downloaded 239 times? downloaded refers to totalsnatched."

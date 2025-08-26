@@ -76,7 +76,7 @@ class MaskWithGoldData(JsonListTransformer):
     async def _process_row(self, row):
         self.vid = 1
         self.value_dict = dict()
-        schema_links = row['final_links']
+        schema_links = row['annotated_links']
         question = row['question']
         symbol_table = row['symbolic']['to_symbol']
         masked_terms = []

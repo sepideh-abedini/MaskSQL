@@ -45,9 +45,9 @@ class AddId(JsonListTransformer):
 
 
 class AddExpLinksAsDict(JsonListTransformer):
-    def __init__(self, tables_path):
+    def __init__(self, t_path):
         super().__init__()
-        self.schema_repo = DatabaseSchemaRepo(tables_path)
+        self.schema_repo = DatabaseSchemaRepo(t_path)
 
     async def _process_row(self, row: Dict) -> Dict:
         links = row['exp_links']
@@ -63,6 +63,16 @@ class AddExpLinksAsDict(JsonListTransformer):
                     if link_ref == col.lower():
                         reference_links[link] = f"COLUMN:{table}.{col}"
                         break
+
+        question = row['question'].lower()
+        for t, cols in schema.tables.items():
+            t_name = t[1:-1].lower()
+            if t in question:
+                reference_links[t_name] = f"TABLE:{t}"
+            for c, _ in cols.items():
+                c_name = c[1:-1].lower()
+                if c_name in question:
+                    reference_links[c_name] = f"COLUMN:{t}.{c}"
         row['ref_links'] = reference_links
         return row
 
@@ -100,25 +110,23 @@ class Unwind(JsonListTransformer):
         return row
 
 
-pl = [
-    FilterList(lambda row: 'question_id' not in row),
-    RepairGoldLinks('repaired_links', model="gpt-4.1"),
-    AddExplicitLinks('exp_links', model="gpt-4.1"),
-    AddExpLinksAsDict(tables_path),
-    MergeLinks(),
-    AddSymbolTable(tables_path),
-    AddSymbolicSchema(tables_path),
-    MaskWithGoldData(),
-    DeleteProp('attack'),
-    Attack("attack", model=LLM_MODEL),
-    FilterList(lambda row: row['eval']['acc'] == 0),
-    Unwind(),
-    # PrintResults()
-    # Inspector()
-]
-
-
 async def main():
+    pl = [
+        FilterList(lambda row: 'question_id' not in row),
+        RepairGoldLinks('repaired_links', model="gpt-4.1"),
+        AddExplicitLinks('exp_links', model="gpt-4.1"),
+        AddExpLinksAsDict(tables_path),
+        MergeLinks(),
+        AddSymbolTable(tables_path),
+        AddSymbolicSchema(tables_path),
+        MaskWithGoldData(),
+        DeleteProp('attack'),
+        Attack("attack", model=LLM_MODEL),
+        FilterList(lambda row: row['eval']['acc'] == 0),
+        Unwind(),
+        # PrintResults()
+        # Inspector()
+    ]
     try:
         logger.remove(0)
     except Exception:

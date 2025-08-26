@@ -2,7 +2,6 @@ import asyncio
 import os
 from typing import Dict
 
-from fine.json_utils import read_json, write_json
 from pipe.add_schema import AddSchema
 from pipe.add_symb_schema import AddSymbolicSchema
 from pipe.pipeline import Pipeline
@@ -11,6 +10,7 @@ from pipe.symb_table import AddSymbolTable
 from pipelines.fine.fine_tune import AddId, AddExpLinksAsDict
 from pipelines.fine.repair_schema_links import RepairGoldLinks, AddExplicitLinks
 from src.cat.catter import Catter
+from ut.json_utils import read_json, write_json
 
 catter = Catter()
 
@@ -81,20 +81,20 @@ class MergeLinks(JsonListTransformer):
         return row
 
 
-pl = [
-    AddSchema(tables_path),
-    RepairGoldLinks('gold_links', model="gpt-4.1"),
-    AddExplicitLinks('exp_links', model="gpt-4.1"),
-    AddId(),
-    AddExpLinksAsDict(tables_path),
-    MergeLinks(),
-    AddSymbolTable(tables_path),
-    AddSymbolicSchema(tables_path),
-    Unwind(),
-]
-
 
 async def main():
+    pl = [
+        AddSchema(tables_path),
+        RepairGoldLinks('gold_links', model="gpt-4.1"),
+        AddExplicitLinks('exp_links', model="gpt-4.1"),
+        AddId(),
+        AddExpLinksAsDict(tables_path),
+        MergeLinks(),
+        AddSymbolTable(tables_path),
+        AddSymbolicSchema(tables_path),
+        Unwind(),
+    ]
+
     pipeline = Pipeline(pl)
     await pipeline.run(input_path)
 

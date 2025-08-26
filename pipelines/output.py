@@ -12,7 +12,7 @@ from pipe.pipeline import Pipeline
 from pipe.processor.list_transformer import JsonListTransformer
 from pipelines.eval import Results
 
-out_dir = os.path.join("out", "latest_gpt")
+out_dir = os.path.join("out", "latest_qwen")
 
 if not os.path.exists(out_dir):
     os.makedirs(out_dir, exist_ok=True)
@@ -31,7 +31,7 @@ class FixFormat(JsonListTransformer):
 
 pipe = [
     AddSchema(tables_path),
-    GenSql('pred_sql', model="gpt-4.1"),
+    GenSql('pred_sql', model="qwen"),
     ExecAccCalc(database_path),
     Results()
 ]

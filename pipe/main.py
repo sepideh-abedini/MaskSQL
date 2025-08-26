@@ -48,7 +48,7 @@ output_path = os.path.join(out_dir, "output.json")
 eval_path = os.path.join(out_dir, "eval.json")
 
 mask_pipe = [
-    LimitJson("limit"),
+    LimitJson(),
     RankSchemaResd(tables_path),
     AddFilteredSchema(tables_path),
     GenGoldLinks("gold_links", model=LLM_MODEL),

@@ -30,7 +30,7 @@ class RepairSQL(PromptProcessor):
         err = row['pre_eval']['err']
         pred_res = row['pre_eval']['pred_res']
         exec_res = f"Execution Result: {pred_res}, Execution Error: {err}"
-        prompt = REPAIR_SQL_PROMPT_V5.format(question=question, schema=schema, sql=sql, exec_res=err)
+        prompt = REPAIR_SQL_PROMPT_V3.format(question=question, schema=schema, sql=sql, exec_res=err)
         return prompt
 
     async def _process_row(self, row):

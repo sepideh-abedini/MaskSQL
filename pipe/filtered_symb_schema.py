@@ -8,8 +8,8 @@ from pipe.schema_repo import DatabaseSchemaRepo, DatabaseSchema
 
 class AddFilteredSymbolicSchema(JsonListTransformer):
 
-    def __init__(self, prop_name, tables_path):
-        super().__init__(prop_name)
+    def __init__(self, tables_path):
+        super().__init__()
         self.schema_repo = DatabaseSchemaRepo(tables_path)
 
     async def _process_row(self, row):
@@ -22,10 +22,10 @@ class AddFilteredSymbolicSchema(JsonListTransformer):
 
         reverse_dict = self.get_reverse_dict(tables, col_refs, symbol_table)
 
-        return {
-            "schema": symbolic_schema.to_yaml(),
-            "reverse_dict": reverse_dict
-        }
+        row['symbolic']['schema'] = symbolic_schema.to_yaml()
+        row['symbolic']['reverse_dict'] = reverse_dict
+
+        return row
 
     def get_col_symbol(self, table_name: str, col_name: str, col_refs: Set[str], symbol_table: Dict[str, str]) -> str:
         col_ref = f"{table_name}.{col_name}"

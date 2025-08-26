@@ -14,7 +14,7 @@ from pipe.sqlite_facade import SqliteFacade
 from src.cat.catter import Catter
 from ut.json_utils import read_json
 
-out_dir = os.path.join("out", "new_dataset")
+out_dir = os.path.join("out", "latest_msc")
 
 if not os.path.exists(out_dir):
     os.makedirs(out_dir, exist_ok=True)
@@ -38,6 +38,8 @@ class AddPred(JsonListTransformer):
     async def _process_row(self, row: Dict) -> Dict:
         idx = row['question_id']
         pred_row = self.preds[idx]
+        row['total_latency'] = 0
+        row['total_toks'] = 0
         row['gold'] = row['SQL']
         row['pred'] = pred_row['sql_pred']
         return row
@@ -80,28 +82,59 @@ class Results(JsonListTransformer):
         super().__init__()
         self.stat_rows = []
         self.ea = 0
+        self.pre_ea = 0
         self.time = 0
         self.toks = 0
         self.count = 0
+        self.ri_score = 0
+        self.total_leaks = 0
+        self.total_masks = 0
 
     def _post_run(self):
         df = pd.DataFrame(self.stat_rows)
         print(df.mean())
-        print(len(self.stat_rows))
+        print("Count: ", self.count)
 
     async def _process_row(self, row: Dict) -> Dict:
         stat = dict()
-        ea = row['eval']['acc']
-        stat['EA'] = ea
-        stat['Tokens'] = row['toks']
-        t = int(row['finished']) - int(row['created'])
-        stat['Latency'] = t
+        if 'eval' in row:
+            ea = row['eval']['acc']
+            stat['EA'] = ea
+        if 'total_latency' in row:
+            stat['Tokens'] = row['total_toks']
+            stat['Latency'] = row['total_latency']
+        if 'pre_eval' in row:
+            stat['pre_acc'] = row['pre_eval']['acc']
         self.count += 1
         self.stat_rows.append(stat)
-        if ea == 0:
-            print("-" * 100)
-            print(row['eval']['pred'])
-            print(row['eval']['gold'])
+        if 'attack' in row and 'annotated_links' in row:
+            masked_terms = row['symbolic']['masked_terms']
+            attack = row['attack']
+            a_links = row['annotated_links']
+
+            ri_terms = 0
+            num_masks = len(masked_terms)
+            for term in masked_terms:
+                if term.lower() in attack.lower():
+                    ri_terms += 1
+            if num_masks > 0:
+                ris = ri_terms / num_masks
+            else:
+                ris = 0
+            stat['ris'] = ris
+
+            mask_covering = 0
+            a_masks = len(a_links)
+            for a_term, a_item in a_links.items():
+                a_term = a_term.lower()
+                for term in masked_terms:
+                    term = term.lower()
+                    if a_term in term:
+                        mask_covering += 1
+                        break
+            mcs = mask_covering / a_masks
+            stat['mcs'] = mcs
+
         return row
 
 
@@ -169,22 +202,21 @@ class CollectRows(JsonListTransformer):
         return row
 
 
-pipe = [
-    AddPred(),
-    EvalPred(database_path),
-    AssignCat(),
-    # CollectRows(),
-    FilterList(lambda r: r['eval']['acc'] == 0),
-    Results(),
-    # CopyTransformer('eval.acc', 'ea'),
-    # CollectRows(),
-    # FilterList(lambda r: r['selected']),
-    # Charter(),
-    # Counter()
-]
-
-
 async def main():
+    pipe = [
+        AddPred(),
+        EvalPred(database_path),
+        # AssignCat(),
+        # CollectRows(),
+        # FilterList(lambda r: r['eval']['acc'] == 0),
+        Results(),
+        # CopyTransformer('eval.acc', 'ea'),
+        # CollectRows(),
+        # FilterList(lambda r: r['selected']),
+        # Charter(),
+        # Counter()
+    ]
+
     try:
         logger.remove(0)
     except Exception:

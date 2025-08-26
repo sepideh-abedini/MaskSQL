@@ -19,7 +19,6 @@ class LimitJson(JsonListTransformer):
 
         out_rows = []
         for row in out_data:
-            row['total_toks'] = 0
             out_rows.append(row)
 
         with open(output_file, "w") as f:

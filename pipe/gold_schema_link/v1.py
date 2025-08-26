@@ -27,6 +27,7 @@ Mapping Rules:
 - Chose the shortest n-gram that maps to the schema item.
 - If removing a word from an n-gram still points to the same schema item, use the shorter version.
 - Exclude stop words from the n-grams
+- Look for typos and other mistakes, user might meant to reference a table or column but having a typo in the question
 
 Output Rules:
 - Output only a JSON object representing the mapping.

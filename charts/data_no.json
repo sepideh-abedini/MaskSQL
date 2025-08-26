@@ -1,0 +1,82 @@
+[
+    {
+        "Model": "GroundTruth Masking",
+        "Variant": "",
+        "EA": 0.0,
+        "Tokens": 0.0,
+        "Latency": 0.0,
+        "RIS": 0.13,
+        "MCS": 1.0
+    },
+    {
+        "Model": "TrustSQL",
+        "Variant": "Full",
+        "EA": 0.55,
+        "Tokens": 6114,
+        "Latency": 9.60,
+        "RIS": 0.24,
+        "MCS": 0.61
+    },
+    {
+        "Model": "TrustSQL",
+        "Variant": "Partial",
+        "EA": 0.62,
+        "Tokens": 6757,
+        "Latency": 13.97,
+        "RIS": 0.28,
+        "MCS": 0.34
+    },
+    {
+        "Model": "Qwen",
+        "Variant": "",
+        "EA": 0.35,
+        "Tokens": 1380,
+        "Latency": 2.37,
+        "RIS": 0,
+        "MCS": 0
+    },
+    {
+        "Model": "GPT-4.1",
+        "Variant": "",
+        "EA": 0.75,
+        "Tokens": 1352,
+        "Latency": 1.22,
+        "RIS": 0,
+        "MCS": 0
+    },
+    {
+        "Model": "DAIL",
+        "Variant": "Qwen",
+        "EA": 0.44,
+        "Tokens": 3492,
+        "Latency": 12.2
+    },
+    {
+        "Model": "DIN",
+        "Variant": "Qwen",
+        "EA": 0.50,
+        "Tokens": 24812,
+        "Latency": 12.2
+    },
+    {
+        "Model": "DAIL",
+        "Variant": "GPT-4.1",
+        "EA": 0.63,
+        "Tokens": 3385,
+        "Latency": 11.31
+    },
+    {
+        "Model": "DIN",
+        "Variant": "GPT-4.1",
+        "EA": 0.73,
+        "Tokens": 23036,
+        "Latency": 7.51
+    },
+    {
+        "Model": "MSc",
+        "Variant": "",
+        "EA": 0.48,
+        "Tokens": 8342,
+        "Latency": 10.3
+    }
+]

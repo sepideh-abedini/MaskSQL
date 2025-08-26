@@ -1,12 +1,14 @@
 import asyncio
 import os
 import sys
+import time
 from typing import Dict
 
 from loguru import logger
 
 from pipe.add_schema import AddFilteredSchema, AddSchemaItems
 from pipe.add_symb_schema import AddSymbolicSchema
+from pipe.attack import Attack
 from pipe.copy_transformer import CopyTransformer
 from pipe.det_mask import AddSymbolicQuestion
 from pipe.detect_entities import DetectValues
@@ -17,19 +19,22 @@ from pipe.pipeline import Pipeline
 from pipe.processor.limit_list import LimitJson
 from pipe.processor.list_transformer import JsonListTransformer
 from pipe.processor.print_results import PrintResults
+from pipe.rank_schema import RankSchemaResd
 from pipe.repair_sql import RepairSQL
 from pipe.repair_symb_sql import RepairSymbolicSQL
 from pipe.symb_table import AddSymbolTable
 from pipe.unmask import AddConcreteSql
 from pipe.value_links import LinkValues
 from pipe.wrong_exec_acc import WrongExecAccOutput
+from pipelines.eval import Results
+from ut.json_utils import read_json
 
 LLM_MODEL = os.getenv("LLM_MODEL")
 SLM_MODEL = os.getenv("SLM_MODEL")
 VLM_MODEL = os.getenv("VLM_MODEL")
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 
-out_dir = os.path.join("out", "final_v3")
+out_dir = os.path.join("out", "latest", "trust_full_tmp")
 
 if not os.path.exists(out_dir):
     os.makedirs(out_dir, exist_ok=True)
@@ -46,10 +51,23 @@ class FixFormat(JsonListTransformer):
         return row
 
 
+class AddResd(JsonListTransformer):
+    def __init__(self, out_dirc):
+        super().__init__()
+        self.resd = read_json(os.path.join(out_dirc, "resdsql_test.json"))
+        self.idx = 0
+
+    async def _process_row(self, row: Dict) -> Dict:
+        row['tc_original'] = self.resd[self.idx]['tc_original']
+        self.idx += 1
+        return row
+
+
 mask_pipe = [
     LimitJson("limit"),
-    # RankSchemaResd(tables_path),
-    AddSchemaItems(tables_path),
+    AddResd(out_dir),
+    RankSchemaResd(tables_path),
+    # AddSchemaItems(tables_path),
     AddFilteredSchema(tables_path),
     # GenGoldLinks("gold_links", model=LLM_MODEL),
     AddSymbolTable(tables_path),
@@ -64,11 +82,12 @@ mask_pipe = [
     GenerateSymbolicSql("symbolic", model=LLM_MODEL),
     RepairSymbolicSQL('symbolic', model=LLM_MODEL),
     AddConcreteSql(),
-    FixFormat(),
     WrongExecAccOutput(database_path),
     RepairSQL('pred_sql', model=SLM_MODEL),
     ExecAccCalc(database_path),
-    PrintResults()
+    # Attack("attack", model=LLM_MODEL),
+    Results()
+    # PrintResults()
 ]
 
 

@@ -11,7 +11,10 @@ CONCEPTS = [
 
 class FilterSchemaLinks(PromptProcessor):
     def _process_output(self, row, output):
-        return extract_object(output)
+        obj = extract_object(output)
+        if obj is None:
+            return dict()
+        return obj
 
     def _get_prompt(self, row):
         schema_links = row['schema_links']
