@@ -18,7 +18,7 @@ df = df.sort_values(by="EA")
 df['Execution Accuracy'] = df['EA']
 
 plt.rcParams.update({'font.size': 17})  # set global font size
-plt.figure(dpi=300, figsize=(14, 6))
+plt.figure(dpi=300, figsize=(16, 6))
 palette = {True: '#2ca02c', False: "#1f77b4"}
 sns.barplot(df, x="Model", y="Tokens", hue="ours", palette=palette, legend=False, width=0.6)
 plt.gca().yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, _: f'{int(x / 1000)}k'))

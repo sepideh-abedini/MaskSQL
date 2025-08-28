@@ -121,7 +121,7 @@ class Results(JsonListTransformer):
                 ris = ri_terms / num_masks
             else:
                 ris = 0
-            stat['ris'] = ris
+            stat['ris'] = 1 - ris
 
             mask_covering = 0
             a_masks = len(a_links)

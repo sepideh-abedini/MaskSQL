@@ -1,5 +1,7 @@
 import re
 
+from loguru import logger
+
 from pipe.attack_prompts.add_masked_terms import ADD_MASKED_TERMS_PROMPT_V1
 from pipe.detect_values_prompts.prompt_processor import PromptProcessor
 from pipe.llm_util import extract_object
@@ -14,6 +16,13 @@ class AddMaskedTerms(PromptProcessor):
         if output is None:
             return []
         masked_terms = list(output.keys())
+        q = row['question']
+        filtered_terms = []
+        for m in masked_terms:
+            if m.lower() in q.lower():
+                filtered_terms.append(m)
+            else:
+                logger.error(f"{m} not in question: {q}")
         return masked_terms
 
     def _get_prompt(self, row):
