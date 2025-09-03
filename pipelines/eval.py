@@ -89,11 +89,16 @@ class Results(JsonListTransformer):
         self.ri_score = 0
         self.total_leaks = 0
         self.total_masks = 0
+        self.a_count = 0
+        self.recall_scores = []
 
     def _post_run(self):
         df = pd.DataFrame(self.stat_rows)
         print(df.mean())
         print("Count: ", self.count)
+        if len(self.recall_scores) > 0:
+            print(len(self.recall_scores))
+            print(sum(self.recall_scores) / len(self.recall_scores))
 
     async def _process_row(self, row: Dict) -> Dict:
         stat = dict()
@@ -110,7 +115,8 @@ class Results(JsonListTransformer):
         if 'attack' in row and 'annotated_links' in row:
             masked_terms = row['symbolic']['masked_terms']
             attack = row['attack']
-            a_links = row['annotated_links']
+            # a_links = row['annotated_links']
+            a_links = row['filt_anon_links']
 
             ri_terms = 0
             num_masks = len(masked_terms)
@@ -132,8 +138,13 @@ class Results(JsonListTransformer):
                     if a_term in term:
                         mask_covering += 1
                         break
-            mcs = mask_covering / a_masks
+            if a_masks == 0:
+                mcs = 1
+            else:
+                mcs = mask_covering / a_masks
+                self.recall_scores.append(mcs)
             stat['mcs'] = mcs
+            stat['a_masks'] = a_masks
 
         return row
 

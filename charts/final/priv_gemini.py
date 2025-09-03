@@ -12,22 +12,24 @@ plt.rcParams["font.family"] = "serif"  # or 'sans-serif', 'monospace'
 data = {
     # 'Model': ['Ground-Truth Masking', 'TrustSQL (Full Policy)', 'TrustSQL (Category-Based Policy)'],
     # 'Model': ['Ground-Truth Masking', 'TrustSQL ($\psi_{F}$)', 'TrustSQL (Category-Based Policy)'],
-    'Model': [r'\textbf{Ground-Truth Masking}', r'\textbf{TrustSQL ($\Psi_{F}$)}', r'\textbf{TrustSQL ($\Psi_{C}$)}'],
-    'Masking Recall': [1.00, 0.6136, 0.3428],
-    'Re-identification Score': [0.8681, 0.7547, 0.7142]
+    'Model': [r'\textbf{Ground-Truth Masking}', r'\textbf{MaskSQL ($\Psi_{F}$)}', r'\textbf{MaskSQL ($\Psi_{C}$)}'],
+    r'\textbf{Masking Recall}': [1.00, 0.6136, 0.3428],
+    # r'\textbf{Masking Recall}': [1.00, 0.6136, 0.6903],
+    # r'\textbf{Masking Recall}': [1.00, 0.6136, 0.4194],
+    r'\textbf{Re-identification Score}': [0.8681, 0.7547, 0.7142]
 }
 df = pd.DataFrame(data)
 
 # 2. Set a specific order for the y-axis categories to match the image.
 # We reverse the list because matplotlib plots from the bottom up.
 # category_order = ['Ground-Truth Masking', 'TrustSQL (Full Policy)', 'TrustSQL (Category-Based Policy)']
-category_order = [r'\textbf{Ground-Truth Masking}', r'\textbf{TrustSQL ($\Psi_{F}$)}',
-                  r'\textbf{TrustSQL ($\Psi_{C}$)}']
+category_order = [r'\textbf{Ground-Truth Masking}', r'\textbf{MaskSQL ($\Psi_{F}$)}',
+                  r'\textbf{MaskSQL ($\Psi_{C}$)}']
 df['Model'] = pd.Categorical(df['Model'], categories=category_order, ordered=True)
 
 # 3. "Melt" the DataFrame to a long format suitable for seaborn's `hue`.
 # This creates separate rows for each metric, allowing for grouped bars.
-df_melt = df.melt(id_vars=["Model"], value_vars=["Masking Recall", "Re-identification Score"],
+df_melt = df.melt(id_vars=["Model"], value_vars=[r"\textbf{Masking Recall}", r"\textbf{Re-identification Score}"],
                   var_name="Metric", value_name="Score")
 
 # 4. Set up the plot
@@ -49,7 +51,7 @@ for container in ax.containers:
 # Format the x-axis to show percentages
 ax.xaxis.set_major_formatter(mticker.PercentFormatter(1.0))
 ax.set_xlim(0, 1.15)  # Extend x-axis limit to make space for labels
-ax.set_xlabel("Privacy Score (\%)", fontsize=22)
+ax.set_xlabel(r"\textbf{Privacy Score (\%)}", fontsize=22)
 # ax.set_xlabel("Privacy Score (")
 ax.set_ylabel("")  # Remove the y-axis label
 

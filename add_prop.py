@@ -2,9 +2,9 @@ import json
 
 from ut.json_utils import read_json, write_json
 
-src = "out/latest/trust_full/20_Attack.json"
-dst = "out/latest/ablation/8_slm_repair/16_AddConcreteSql.json"
-prop = "attack"
+src = "out/latest/trust_partial_new_very_new/3_FilterAnonLinks.json"
+dst = "out/latest/trust_partial_new_very_new_final/21_Attack.json"
+prop = "filt_anon_links"
 
 src_data = read_json(src)
 
