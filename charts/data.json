@@ -14,8 +14,8 @@
         "EA": 0.55,
         "Tokens": 6114,
         "Latency": 9.60,
-        "RIS": 0.24,
-        "MCS": 0.61
+        "RIS": 0.2453,
+        "MCS": 0.6136
     },
     {
         "Model": "TrustSQL",

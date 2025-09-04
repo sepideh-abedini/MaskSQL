@@ -1,6 +1,6 @@
 [
     {
-        "Model": "GroundTruth Masking",
+        "Model": "Ground-Truth Masking",
         "Variant": "",
         "EA": 0.0,
         "Tokens": 0.0,
@@ -10,8 +10,8 @@
     },
     {
         "Model": "TrustSQL",
-        "Variant": "Full",
-        "EA": 0.55,
+        "Variant": "Full Policy",
+        "EA": 0.5566,
         "Tokens": 6114,
         "Latency": 9.60,
         "RIS": 0.24,
@@ -19,10 +19,10 @@
     },
     {
         "Model": "TrustSQL",
-        "Variant": "Partial",
-        "EA": 0.62,
+        "Variant": "Category-Based Policy",
+        "EA": 0.6266,
         "Tokens": 6757,
-        "Latency": 9.60,
+        "Latency": 13.97,
         "RIS": 0.28,
         "MCS": 0.34
     },
@@ -47,28 +47,28 @@
     {
         "Model": "DAIL",
         "Variant": "Qwen",
-        "EA": 0.44,
+        "EA": 0.4433,
         "Tokens": 3492,
         "Latency": 12.2
     },
     {
         "Model": "DIN",
         "Variant": "Qwen",
-        "EA": 0.50,
+        "EA": 0.5066,
         "Tokens": 24812,
         "Latency": 12.2
     },
     {
         "Model": "DAIL",
         "Variant": "GPT-4.1",
-        "EA": 0.63,
+        "EA": 0.6333,
         "Tokens": 3385,
         "Latency": 11.31
     },
     {
         "Model": "DIN",
         "Variant": "GPT-4.1",
-        "EA": 0.73,
+        "EA": 0.7366,
         "Tokens": 23036,
         "Latency": 7.51
     },
