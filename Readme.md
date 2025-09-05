@@ -4,12 +4,18 @@
 
 ### System Requirements
 
-python 3.8, virtualenv
+python 3.11, virtualenv
+
+You can use pyenv to setup the python3.11
+
+```shell
+pyenv local 3.11
+```
 
 ### Install Requirements
 
 ```shell
-python3.8 -m venv .venv
+python3.11 -m venv .venv
 source .venv/bin/activate
 pip3 install -r requirements.txt
 ```
@@ -55,7 +61,7 @@ To run the MaskSQL, first you need to activated the venv and set the environment
 ```shell
 source .venv/bin/activated
 export $(cat .env | xargs)
-EXPORT PYTHONPATH=.
+export PYTHONPATH=.
 ```
 
 Then you can simply run the `main.py`:
