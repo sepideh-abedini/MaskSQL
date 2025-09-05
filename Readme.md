@@ -1,12 +1,17 @@
 # MaskSQL
 
-## Installation and Setup Instruction
+# Table of Contents
+- [Installation](#installation-and-setup-instruction)
+- [Run MaskSQL](#run-masksql)
+- [How does it Work?](Framework.md)
+
+## Installation and Setup Instructions
 
 ### System Requirements
 
 python 3.11, virtualenv
 
-You can use pyenv to setup the python3.11
+You can use pyenv to setup Python 3.11
 
 ```shell
 pyenv local 3.11
@@ -50,14 +55,14 @@ You may also change the `LIMIT` variable to modify the number of entries to be r
 
 For instance, set `LIMIT=10` to run the pipeline for a dataset of size 10.
 
-`SLM_MODEL` and `LLM_MODEL` specify the id small/large language models to be used in the pipeline.
-These ids should be set based on the LM provider being used.
+`SLM_MODEL` and `LLM_MODEL` specify the ID of small/large language models to be used in the pipeline.
+These IDs should be set based on the LM provider being used.
 For instance, since we are using OpenRouter, model identifiers should be specified accordingly, e.g.,
 `openai/gpt-4.1` for GPT-4.1.
 
 ### Run MaskSQL
 
-To run the MaskSQL, first you need to activated the venv and set the environment variables:
+To run the MaskSQL, first you need to activate the venv and set the environment variables:
 ```shell
 source .venv/bin/activated
 export $(cat .env | xargs)
