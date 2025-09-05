@@ -3,7 +3,8 @@
 # Table of Contents
 - [Installation](#installation-and-setup-instruction)
 - [Run MaskSQL](#run-masksql)
-- [How does it Work?](Framework.md)
+- [MaskSql Framework](Framework.md)
+- [MaskSQL Pipeline Stages](Stages.md)
 
 ## Installation and Setup Instructions
 

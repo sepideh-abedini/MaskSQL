@@ -2,8 +2,7 @@
 
 # Framework
 
-MaskSQL is implemented on top of an LM-enabled pipeline framework.
-First, we explain the framework.
+MaskSQL is implemented on top of an LM-enabled pipeline framework which we explain here.
 
 We start to dig into how the framework works, starting from the `main.py`.
 
