@@ -5,10 +5,9 @@ import sys
 from loguru import logger
 
 from ut.json_utils import read_json
-from pipe.pipeline import Pipeline
-from pipe.processor.limit_list import LimitJson
-from pipe.processor.list_transformer import JsonListTransformer
-from pipe.schema_repo import DatabaseSchemaRepo
+from src.pipe import Pipeline
+from src.pipe.processor.list_transformer import JsonListTransformer
+from src.pipe.schema_repo import DatabaseSchemaRepo
 
 LLM_MODEL = os.getenv("LLM_MODEL")
 SLM_MODEL = os.getenv("SLM_MODEL")

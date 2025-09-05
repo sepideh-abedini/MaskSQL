@@ -2,10 +2,9 @@ import asyncio
 import os
 from typing import Dict
 
-from pipe.pipeline import Pipeline
-from pipe.processor.limit_list import FilterList
-from pipe.processor.list_transformer import JsonListTransformer
-from pipe.processor.printer import LambdaPrinter
+from src.pipe import Pipeline
+from src.pipe.processor import FilterList
+from src.pipe.processor.list_transformer import JsonListTransformer
 from src.cat.catter import Catter
 from ut.json_utils import write_json
 

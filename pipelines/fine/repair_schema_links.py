@@ -1,5 +1,5 @@
-from pipe.detect_values_prompts.prompt_processor import PromptProcessor
-from pipe.llm_util import extract_object
+from src.pipe.detect_values_prompts import PromptProcessor
+from src.pipe import extract_object
 from pipelines.fine.add_exp import ADD_EXPLICIT_LINKS_PROMPT_V1
 from pipelines.fine.repair import GOLD_SCHEMA_LINKING_REPAIR_PROMPT_V1
 

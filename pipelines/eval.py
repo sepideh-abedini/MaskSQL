@@ -6,11 +6,9 @@ from typing import Dict
 import pandas as pd
 from loguru import logger
 
-from pipe.copy_transformer import CopyTransformer
-from pipe.pipeline import Pipeline
-from pipe.processor.limit_list import FilterList
-from pipe.processor.list_transformer import JsonListTransformer
-from pipe.sqlite_facade import SqliteFacade
+from src.pipe.pipeline import Pipeline
+from src.pipe.processor.list_transformer import JsonListTransformer
+from src.pipe.sqlite_facade import SqliteFacade
 from src.cat.catter import Catter
 from ut.json_utils import read_json
 
@@ -95,10 +93,11 @@ class Results(JsonListTransformer):
     def _post_run(self):
         df = pd.DataFrame(self.stat_rows)
         print(df.mean())
-        print("Count: ", self.count)
-        if len(self.recall_scores) > 0:
-            print(len(self.recall_scores))
-            print(sum(self.recall_scores) / len(self.recall_scores))
+        # print("Count: ", self.count)
+        # if len(self.recall_scores) > 0:
+        #     print(len(self.recall_scores))
+        #     print(len(self.recall_scores))
+        #     print(sum(self.recall_scores) / len(self.recall_scores))
 
     async def _process_row(self, row: Dict) -> Dict:
         stat = dict()
@@ -115,8 +114,8 @@ class Results(JsonListTransformer):
         if 'attack' in row and 'annotated_links' in row:
             masked_terms = row['symbolic']['masked_terms']
             attack = row['attack']
-            # a_links = row['annotated_links']
-            a_links = row['filt_anon_links']
+            a_links = row['annotated_links']
+            # a_links = row['filt_anon_links']
 
             ri_terms = 0
             num_masks = len(masked_terms)

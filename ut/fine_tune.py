@@ -4,29 +4,28 @@ import sys
 
 from loguru import logger
 
-from pipe.add_schema import AddFilteredSchema
-from pipe.add_symb_schema import AddSymbolicSchema
-from pipe.attack import Attack, AttackRaw
-from pipe.copy_transformer import CopyTransformer
-from pipe.det_mask import AddSymbolicQuestion
-from pipe.detect_entities import DetectValues
-from pipe.exec_acc import ExecAccCalc
-from pipe.gen_gold_schema import GenGoldLinks
-from pipe.gen_masked_sql import GenerateSymbolicSql
-from pipe.gen_masked_sql_raw import GenerateSymbolicSqlRaw
-from pipe.link_schema import LinkSchema
-from pipe.pipeline import Pipeline
-from pipe.processor.limit_list import LimitJson
-from pipe.processor.print_results import PrintResults
-from pipe.processor.privacy_score import PrivacyScore
-from pipe.rank_schema import RankSchemaResd
-from pipe.repair_sql import RepairSQL
-from pipe.repair_symb_sql import RepairSymbolicSQL, RepairSymbolicSQLRaw
-from pipe.slm_mask import SlmMask, SlmUnmask
-from pipe.symb_table import AddSymbolTable
-from pipe.unmask import AddConcreteSql
-from pipe.value_links import LinkValues
-from pipe.wrong_exec_acc import WrongExecAccOutput
+from src.pipe.add_schema import AddFilteredSchema
+from src.pipe import AddSymbolicSchema
+from src.pipe import Attack, AttackRaw
+from src.pipe import CopyTransformer
+from src.pipe import AddSymbolicQuestion
+from src.pipe import DetectValues
+from src.pipe.exec_acc import CalcExecAcc
+from src.pipe import GenGoldLinks
+from src.pipe.gen_masked_sql import GenerateSymbolicSql
+from src.pipe.gen_masked_sql_raw import GenerateSymbolicSqlRaw
+from src.pipe import LinkSchema
+from src.pipe import Pipeline
+from src.pipe.processor import LimitJson
+from src.pipe.processor import PrintResults
+from src.pipe import RankSchemaResd
+from src.pipe import RepairSQL
+from src.pipe import RepairSymbolicSQL, RepairSymbolicSQLRaw
+from src.pipe import SlmMask, SlmUnmask
+from src.pipe import AddSymbolTable
+from src.pipe import AddConcreteSql
+from src.pipe import LinkValues
+from src.pipe import WrongExecAccOutput
 
 LLM_MODEL = os.getenv("LLM_MODEL")
 LINK_MODEL = os.getenv("LINK_MODEL")
@@ -72,7 +71,7 @@ mask_pipe = [
     WrongExecAccOutput(database_path),
     RepairSQL('pred_sql', model=SLM_MODEL),
     # CopyTransformer('concrete_sql', 'pred_sql'),
-    ExecAccCalc(database_path),
+    CalcExecAcc(database_path),
     # AddMaskedTerms("masked_terms", model=LLM_MODEL),
     # CopyTransformer("masked_terms", "symbolic.masked_terms"),
     # SchemaLinkScore(),
@@ -92,7 +91,7 @@ slm_mask = [
     SlmUnmask("concrete_sql", model=SLM_MODEL),
     WrongExecAccOutput(database_path),
     RepairSQL('pred_sql', model=REPAIR_MODEL),
-    ExecAccCalc(database_path),
+    CalcExecAcc(database_path),
     # PrivacyScore(),
     PrintResults(),
 ]

@@ -1,13 +1,12 @@
 import asyncio
 import os
 import sys
-from typing import Dict
 
 from loguru import logger
 
-from pipe.pipeline import Pipeline
-from pipe.processor.limit_list import FilterList
-from pipe.processor.list_transformer import JsonListTransformer
+from src.pipe import Pipeline
+from src.pipe.processor import FilterList
+from src.pipe.processor.list_transformer import JsonListTransformer
 from pipelines.eval import Results
 from ut.json_utils import read_json
 

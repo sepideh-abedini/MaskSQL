@@ -6,15 +6,14 @@ from typing import Dict
 
 from loguru import logger
 
-from pipe.add_symb_schema import AddSymbolicSchema
-from pipe.attack import Attack
-from pipe.copy_transformer import DeleteProp
-from pipe.pipeline import Pipeline
-from pipe.processor.limit_list import FilterList
-from pipe.processor.list_transformer import JsonListTransformer
-from pipe.processor.print_results import PrintResults
-from pipe.schema_repo import DatabaseSchemaRepo
-from pipe.symb_table import AddSymbolTable
+from src.pipe import AddSymbolicSchema
+from src.pipe import Attack
+from src.pipe import DeleteProp
+from src.pipe import Pipeline
+from src.pipe.processor import FilterList
+from src.pipe.processor.list_transformer import JsonListTransformer
+from src.pipe.schema_repo import DatabaseSchemaRepo
+from src.pipe import AddSymbolTable
 from pipelines.fine.gold_mask import MaskWithGoldData
 from pipelines.fine.repair_schema_links import RepairGoldLinks, AddExplicitLinks
 

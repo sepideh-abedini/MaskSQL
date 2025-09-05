@@ -3,16 +3,10 @@ import os
 import sys
 from typing import Dict
 
-import pandas as pd
 from loguru import logger
 
-from pipe.copy_transformer import CopyTransformer
-from pipe.pipeline import Pipeline
-from pipe.processor.limit_list import FilterList
-from pipe.processor.list_transformer import JsonListTransformer
-from pipe.sqlite_facade import SqliteFacade
-from src.cat.catter import Catter
-from ut.json_utils import read_json
+from src.pipe import Pipeline
+from src.pipe.processor.list_transformer import JsonListTransformer
 
 out_dir = os.path.join("out", "new_dataset_bad")
 

@@ -5,11 +5,11 @@ from typing import Dict
 
 from loguru import logger
 
-from pipe.add_schema import AddSchema
-from pipe.exec_acc import ExecAccCalc
-from pipe.gen_sql import GenSql
-from pipe.pipeline import Pipeline
-from pipe.processor.list_transformer import JsonListTransformer
+from src.pipe.add_schema import AddSchema
+from src.pipe.exec_acc import CalcExecAcc
+from src.pipe.gen_sql import GenSql
+from src.pipe import Pipeline
+from src.pipe.processor.list_transformer import JsonListTransformer
 from pipelines.eval import Results
 
 out_dir = os.path.join("out", "latest_qwen")
@@ -32,7 +32,7 @@ class FixFormat(JsonListTransformer):
 pipe = [
     AddSchema(tables_path),
     GenSql('pred_sql', model="qwen"),
-    ExecAccCalc(database_path),
+    CalcExecAcc(database_path),
     Results()
 ]
 

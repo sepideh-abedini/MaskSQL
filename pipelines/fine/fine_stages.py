@@ -1,7 +1,7 @@
 import json
 from typing import Dict
 
-from pipe.processor.printer import DataPrinter
+from src.pipe.processor import DataPrinter
 
 
 class Inspector(DataPrinter):

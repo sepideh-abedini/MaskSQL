@@ -5,10 +5,8 @@ from typing import Dict
 
 from loguru import logger
 
-from pipe.pipeline import Pipeline
-from pipe.processor.limit_list import FilterList
-from pipe.processor.list_transformer import JsonListTransformer
-from pipelines.eval import Results
+from src.pipe import Pipeline
+from src.pipe.processor.list_transformer import JsonListTransformer
 from pipelines.fine.bird_extractor import Counter
 
 out_dir = os.path.join("out", "final_v3")

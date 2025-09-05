@@ -2,11 +2,11 @@ import asyncio
 import os
 from typing import Dict
 
-from pipe.add_schema import AddSchema
-from pipe.add_symb_schema import AddSymbolicSchema
-from pipe.pipeline import Pipeline
-from pipe.processor.list_transformer import JsonListTransformer
-from pipe.symb_table import AddSymbolTable
+from src.pipe.add_schema import AddSchema
+from src.pipe import AddSymbolicSchema
+from src.pipe import Pipeline
+from src.pipe.processor.list_transformer import JsonListTransformer
+from src.pipe import AddSymbolTable
 from pipelines.fine.fine_tune import AddId, AddExpLinksAsDict
 from pipelines.fine.repair_schema_links import RepairGoldLinks, AddExplicitLinks
 from src.cat.catter import Catter

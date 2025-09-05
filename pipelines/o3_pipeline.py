@@ -4,24 +4,24 @@ import sys
 
 from loguru import logger
 
-from pipe.add_schema import AddFilteredSchema
-from pipe.add_symb_schema import AddSymbolicSchema
-from pipe.copy_transformer import CopyTransformer
-from pipe.det_mask import AddSymbolicQuestion
-from pipe.detect_entities import DetectValues
-from pipe.exec_acc import ExecAccCalc
-from pipe.gen_masked_sql import GenerateSymbolicSql
-from pipe.link_schema import LinkSchema
-from pipe.pipeline import Pipeline
-from pipe.processor.limit_list import LimitJson
-from pipe.processor.print_results import PrintResults
-from pipe.rank_schema import RankSchemaResd
-from pipe.repair_sql import RepairSQL
-from pipe.repair_symb_sql import RepairSymbolicSQL
-from pipe.symb_table import AddSymbolTable
-from pipe.unmask import AddConcreteSql
-from pipe.value_links import LinkValues
-from pipe.wrong_exec_acc import WrongExecAccOutput
+from src.pipe.add_schema import AddFilteredSchema
+from src.pipe import AddSymbolicSchema
+from src.pipe import CopyTransformer
+from src.pipe import AddSymbolicQuestion
+from src.pipe import DetectValues
+from src.pipe.exec_acc import CalcExecAcc
+from src.pipe.gen_masked_sql import GenerateSymbolicSql
+from src.pipe import LinkSchema
+from src.pipe import Pipeline
+from src.pipe.processor import LimitJson
+from src.pipe.processor import PrintResults
+from src.pipe import RankSchemaResd
+from src.pipe import RepairSQL
+from src.pipe import RepairSymbolicSQL
+from src.pipe import AddSymbolTable
+from src.pipe import AddConcreteSql
+from src.pipe import LinkValues
+from src.pipe import WrongExecAccOutput
 
 LLM_MODEL = os.getenv("LLM_MODEL")
 SLM_MODEL = os.getenv("SLM_MODEL")
@@ -55,7 +55,7 @@ mask_pipe = [
     AddConcreteSql(),
     WrongExecAccOutput(database_path),
     RepairSQL('pred_sql', model=SLM_MODEL),
-    ExecAccCalc(database_path),
+    CalcExecAcc(database_path),
     PrintResults()
 ]
 

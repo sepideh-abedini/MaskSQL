@@ -5,14 +5,9 @@ from typing import Dict
 
 from loguru import logger
 
-from pipe.add_schema import AddSchema
-from pipe.gen_gold_schema import GenGoldLinks
-from pipe.pipeline import Pipeline
-from pipe.processor.limit_list import LimitJson
-from pipe.processor.list_transformer import JsonListTransformer
-from pipelines.fine.bird_train_annon import MergeLinks, Unwind
-from pipelines.fine.fine_tune import AddExpLinksAsDict
-from pipelines.fine.repair_schema_links import AddExplicitLinks, RepairGoldLinks
+from src.pipe import Pipeline
+from src.pipe.processor import LimitJson
+from src.pipe.processor.list_transformer import JsonListTransformer
 from ut.json_utils import write_json, read_json
 
 LLM_MODEL = os.getenv("LLM_MODEL")

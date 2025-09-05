@@ -2,8 +2,8 @@ from typing import Dict, Union, List
 
 from loguru import logger
 
-from pipe.processor.list_transformer import JsonListTransformer
-from pipe.utils import replace_str
+from src.pipe.processor.list_transformer import JsonListTransformer
+from src.pipe import replace_str
 
 
 class MaskWithGoldData(JsonListTransformer):
