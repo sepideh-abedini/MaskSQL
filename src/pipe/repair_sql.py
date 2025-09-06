@@ -4,10 +4,6 @@ from src.pipe.detect_values_prompts.prompt_processor import PromptProcessor
 from src.pipe.gen_sql import extract_sql
 from src.pipe.sql_repair_prompts.v3 import REPAIR_SQL_PROMPT_V3
 
-
-# from pipe.sql_repair_prompts.v4 import REPAIR_SQL_PROMPT_V4
-
-
 class RepairSQL(PromptProcessor):
 
     def _process_output(self, row, output):
