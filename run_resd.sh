@@ -38,7 +38,7 @@ python3 schema_item_classifier.py \
 
 python3 text2sql_data_generator.py \
 --input_dataset_path "../data/resd/test_with_probs.json" \
---output_dataset_path "../data/resd_output.json" \
+--output_dataset_path "../data/resd_output_orig.json" \
 --topk_table_num 4 \
 --topk_column_num 5 \
 --mode "test" \
@@ -46,6 +46,12 @@ python3 text2sql_data_generator.py \
 --add_fk_info \
 --output_skeleton \
 --target_type "sql"
+
+python3 add_qid.py \
+--src "../data/1_input.json" \
+--dst "../data/resd_output_orig.json" \
+--out "../data/resd_output.json" \
+--prop "question_id"
 
 jq "length" "../data/resd_output.json"
 
