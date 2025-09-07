@@ -19,6 +19,12 @@ You can use pyenv to setup Python 3.11
 pyenv local 3.11
 ```
 
+On the Alliance clusters you can run the following command to
+load the Python3.11:
+```shell
+module load StdEnv/2023
+```
+
 ### Install Requirements
 
 ```shell
@@ -79,20 +85,12 @@ Then, you need to run the MaskSQL with the `--resd` option.
 To run the MaskSQL, first you need to activate the venv and set the environment variables:
 
 ```shell
-source .venv/bin/activated
+source .venv/bin/activate
 export $(cat .env | xargs)
 export PYTHONPATH=.
 ```
 
-Then you can simply run the `main.py`:
-
-```shell
-python main.py
-```
-Or, if you want to run with the RESDSQL run the following:
+Then you can run MaskSQL pipline as follows:
 ```shell
 python main.py --resd
 ```
-> Not that if you use `--resd` option you should first run the RESDSQL
-> using the instruction described [here](./Resd.md)  
-
