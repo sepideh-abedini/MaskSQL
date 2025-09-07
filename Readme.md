@@ -1,6 +1,7 @@
 # MaskSQL
 
 # Table of Contents
+
 - [Installation](#installation-and-setup-instruction)
 - [Run MaskSQL](#run-masksql)
 - [MaskSql Framework](Framework.md)
@@ -28,8 +29,13 @@ pip3 install -r requirements.txt
 
 ### Download Dataset
 
-Download [this zip file](https://drive.google.com/file/d/1Fd7IroWv1-m9sJFj4DsGM2F9wHPBUfzt/view?usp=drive_link)
-and extract it to the `data` directory.
+Download [this zip file](https://www.dropbox.com/scl/fi/0zu1hpsnvn0u9blutb76o/data.zip?rlkey=84tfxxtr7n9tzs34uh33vbvut&st=lkvv9esa&dl=0)
+and extract it to the `data` directory:
+```shell
+wget -O data.zip "https://www.dropbox.com/scl/fi/0zu1hpsnvn0u9blutb76o/data.zip?rlkey=84tfxxtr7n9tzs34uh33vbvut&st=lkvv9esa&dl=0"
+unzip data.zip
+```
+
 Your data directory should look like this:
 
 ```shell
@@ -64,6 +70,7 @@ For instance, since we are using OpenRouter, model identifiers should be specifi
 ### Run MaskSQL
 
 To run the MaskSQL, first you need to activate the venv and set the environment variables:
+
 ```shell
 source .venv/bin/activated
 export $(cat .env | xargs)
@@ -71,6 +78,7 @@ export PYTHONPATH=.
 ```
 
 Then you can simply run the `main.py`:
+
 ```shell
 python main.py
 ```

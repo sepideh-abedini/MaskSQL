@@ -2,6 +2,7 @@ import argparse
 import asyncio
 
 from config import MaskSqlConfig
+from pipelines.eval import Results
 from src.pipe.add_schema import AddFilteredSchema
 from src.pipe.add_symb_schema import AddSymbolicSchema
 from src.pipe.attack import AddInferenceAttack
@@ -9,6 +10,7 @@ from src.pipe.copy_transformer import CopyTransformer
 from src.pipe.det_mask import AddSymbolicQuestion
 from src.pipe.detect_entities import DetectValues
 from src.pipe.exec_acc import CalcExecAcc
+from src.pipe.exec_conc_sql import ExecuteConcreteSql
 from src.pipe.gen_masked_sql import GenerateSymbolicSql
 from src.pipe.link_schema import LinkSchema
 from src.pipe.pipeline import Pipeline
@@ -17,11 +19,9 @@ from src.pipe.rank_schema import RankSchemaResd
 from src.pipe.repair_sql import RepairSQL
 from src.pipe.repair_symb_sql import RepairSymbolicSQL
 from src.pipe.resdsql import AddResd
-from pipelines.eval import Results
 from src.pipe.symb_table import AddSymbolTable
 from src.pipe.unmask import AddConcreteSql
 from src.pipe.value_links import LinkValues
-from src.pipe.wrong_exec_acc import ExecuteConcreteSql
 from src.util.log_utils import configure_logging
 
 
@@ -46,6 +46,7 @@ def create_pipeline_stages(conf: MaskSqlConfig):
         RepairSQL('pred_sql', model=conf.slm),
         CalcExecAcc(conf.db_path),
         AddInferenceAttack("attack", model=conf.llm),
+        # PrintProps(['question_id', 'schema', 'symbolic.schema'])
         Results()
     ]
     return mask_pipe
