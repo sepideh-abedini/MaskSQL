@@ -47,11 +47,8 @@ python3 text2sql_data_generator.py \
 --output_skeleton \
 --target_type "sql"
 
-python3 add_qid.py \
---src "../data/1_input.json" \
---dst "../data/resd_output_orig.json" \
---out "../data/resd_output.json" \
---prop "question_id"
+
+
 
 jq "length" "../data/resd_output.json"
 
