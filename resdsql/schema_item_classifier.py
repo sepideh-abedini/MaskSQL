@@ -17,6 +17,8 @@ from transformers.trainer_utils import set_seed
 from torch.utils.tensorboard import SummaryWriter
 from utils.load_dataset import ColumnAndTableClassifierDataset
 
+TRUNCATED_DATASET_PATH = "./data/resd/truncated_dataset.json"
+
 
 def parse_option():
     parser = argparse.ArgumentParser("command line arguments for fine-tuning schema item classifier.")
@@ -530,10 +532,10 @@ def classify_schema(opt):
 
                 truncated_dataset.append(truncated_data)
 
-            with open("./data/pre-processing/truncated_dataset.json", "w") as f:
+            with open(TRUNCATED_DATASET_PATH, "w") as f:
                 f.write(json.dumps(truncated_dataset, indent=2, ensure_ascii=False))
 
-            opt.dev_filepath = "./data/pre-processing/truncated_dataset.json"
+            opt.dev_filepath = TRUNCATED_DATASET_PATH
             total_table_pred_probs, total_column_pred_probs = _test(opt)
 
             for data_id, data in enumerate(truncated_dataset):
@@ -581,7 +583,7 @@ def classify_schema(opt):
                 if len(truncated_table_ids) > 0:
                     truncated_data_info.append([data_id, truncated_table_ids])
 
-            os.remove("./data/pre-processing/truncated_dataset.json")
+            os.remove(TRUNCATED_DATASET_PATH)
 
         with open(opt.output_filepath, "w") as f:
             f.write(json.dumps(dataset, indent=2, ensure_ascii=False))

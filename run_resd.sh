@@ -4,8 +4,6 @@ mkdir -p data/resd
 
 cd resdsql
 
-mkdir -p out/pre-processing
-
 source .venv/bin/activate
 
 python3 NatSQL/table_transform.py \
