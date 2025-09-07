@@ -2,6 +2,10 @@ set -euo pipefail
 
 cd resdsql
 
+for d in eval_results models tensorboard_log third_party predictions; do
+    mkdir -p "$d"
+done
+
 python3.8 -m venv .venv
 source .venv/bin/activate
 
