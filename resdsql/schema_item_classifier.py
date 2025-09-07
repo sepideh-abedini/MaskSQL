@@ -17,7 +17,7 @@ from transformers.trainer_utils import set_seed
 from torch.utils.tensorboard import SummaryWriter
 from utils.load_dataset import ColumnAndTableClassifierDataset
 
-TRUNCATED_DATASET_PATH = "./data/resd/truncated_dataset.json"
+TRUNCATED_DATASET_PATH = "../data/resd/truncated_dataset.json"
 
 
 def parse_option():
