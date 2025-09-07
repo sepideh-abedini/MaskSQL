@@ -5,6 +5,7 @@ from dataclasses import dataclass
 @dataclass
 class MaskSqlConfig:
     data_dir: str
+    resd: bool
     slm: str = os.environ['SLM_MODEL']
     llm: str = os.environ['LLM_MODEL']
     __input_file: str = "1_input.json"

@@ -6,6 +6,7 @@ source .venv/bin/activate
 pip3 install -r requirements.txt
 
 pip install https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.3.0/en_core_web_sm-2.3.0.tar.gz
+pip install https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.2.0/en_core_web_sm-2.2.0.tar.gz
 python nltk_downloader.py
 
 for d in eval_results models tensorboard_log third_party predictions; do

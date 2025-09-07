@@ -1,6 +1,10 @@
 set -euo pipefail
 
+mkdir -p data/resd
+
 cd resdsql
+
+mkdir -p out/pre-processing
 
 source .venv/bin/activate
 
@@ -44,3 +48,7 @@ python3 text2sql_data_generator.py \
 --add_fk_info \
 --output_skeleton \
 --target_type "sql"
+
+jq "length" "../data/resd_output.json"
+
+echo "RESDSQL output file generated!"
