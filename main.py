@@ -2,7 +2,7 @@ import argparse
 import asyncio
 
 from config import MaskSqlConfig
-from pipelines.eval import Results
+from src.eval import Results
 from src.pipe.add_schema import AddFilteredSchema
 from src.pipe.add_symb_schema import AddSymbolicSchema
 from src.pipe.attack import AddInferenceAttack
