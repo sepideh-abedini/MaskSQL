@@ -6,6 +6,8 @@ cd resdsql
 
 source .venv/bin/activate
 
+export TORCH_DEVICE=cuda
+
 python3 NatSQL/table_transform.py \
 --in_file "../data/tables.json" \
 --out_file "../data/resd/test_tables_for_natsql.json" \
@@ -48,7 +50,11 @@ python3 text2sql_data_generator.py \
 --target_type "sql"
 
 
-
+python3 add_qid.py \
+--src "../data/1_input.json" \
+--dst "../data/resd_output_orig.json" \
+--out "../data/resd_output.json" \
+--prop "question_id"
 
 jq "length" "../data/resd_output.json"
 
