@@ -35,11 +35,11 @@ pip3 install -r requirements.txt
 
 ### Download Dataset
 
-Download [this zip file](https://www.dropbox.com/scl/fi/0zu1hpsnvn0u9blutb76o/data.zip?rlkey=84tfxxtr7n9tzs34uh33vbvut&st=lkvv9esa&dl=0)
+Download [this zip file](https://www.dropbox.com/scl/fi/vtraf79vfi1x105veaflk/data.zip?rlkey=7yq6d46aer6h45pdihrc9rht1&st=zdac3rqx&dl=0")
 and extract it to the `data` directory:
 
 ```shell
-wget -O data.zip "https://www.dropbox.com/scl/fi/0zu1hpsnvn0u9blutb76o/data.zip?rlkey=84tfxxtr7n9tzs34uh33vbvut&st=lkvv9esa&dl=0"
+wget -O data.zip "https://www.dropbox.com/scl/fi/vtraf79vfi1x105veaflk/data.zip?rlkey=7yq6d46aer6h45pdihrc9rht1&st=zdac3rqx&dl=0"
 unzip data.zip
 ```
 
