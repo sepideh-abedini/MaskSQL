@@ -1,5 +1,5 @@
 from src.pipe.processor.list_processor import JsonListProcessor
-from src.cat.catter import Catter
+from src.taxonomy.cat.catter import Catter
 
 
 class AnalyzeResults(JsonListProcessor):

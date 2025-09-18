@@ -1,7 +1,7 @@
 import graphviz
 
-from src.parse.node import SqlAstNode
-from src.parse.visitor.tree_extractor import AstDiagramTreeExtractor
+from src.taxonomy.parse.node import SqlAstNode
+from src.taxonomy.parse.visitor.tree_extractor import AstDiagramTreeExtractor
 
 
 def draw_graph(ast: SqlAstNode, out_path: str):

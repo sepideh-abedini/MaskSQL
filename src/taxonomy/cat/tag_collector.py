@@ -1,6 +1,6 @@
-from src.cat.tag_collector_result import TagCollectorResult
-from src.parse.node import *
-from src.parse.visitor.collector_visitor import CollectorVisitor
+from src.taxonomy.cat.tag_collector_result import TagCollectorResult
+from src.taxonomy.parse.node import *
+from src.taxonomy.parse.visitor.collector_visitor import CollectorVisitor
 
 
 class TagCollector(CollectorVisitor):

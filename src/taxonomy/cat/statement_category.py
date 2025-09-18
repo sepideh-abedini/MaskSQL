@@ -1,6 +1,6 @@
 from typing import Set
 
-from src.cat.sub_category import SubCategory
+from src.taxonomy.cat.sub_category import SubCategory
 
 
 class StatementCategory:

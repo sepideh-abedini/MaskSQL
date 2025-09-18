@@ -1,7 +1,7 @@
 from dataclasses import dataclass, replace
 from typing import FrozenSet, Type, Set
 
-from src.cat.tags.sql_tag import SqlTag
+from src.taxonomy.cat.tags.sql_tag import SqlTag
 
 
 @dataclass(eq=True, frozen=True)

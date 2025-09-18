@@ -16,6 +16,7 @@ class DetectValues(PromptProcessor):
     def _get_prompt(self, row):
         schema_items = row['schema_items']
         question = row['question']
+        # slm_sql= row['slm_sql']
         return DETECT_VALUES_PROMPT_V3.format(question=question, schema_items=schema_items)
 
 

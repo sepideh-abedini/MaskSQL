@@ -1,9 +1,9 @@
 from dataclasses import fields
 from typing import Any, Type
 
-from src.parse.node import *
-from src.parse.visitor.node_visitor import NodeVisitor
-from src.parse.visitor.visitor_result import MergeableVisitorResult
+from src.taxonomy.parse.node import *
+from src.taxonomy.parse.visitor.node_visitor import NodeVisitor
+from src.taxonomy.parse.visitor.visitor_result import MergeableVisitorResult
 
 
 class CollectorVisitor(NodeVisitor):

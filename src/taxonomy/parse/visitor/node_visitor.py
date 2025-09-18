@@ -1,4 +1,4 @@
-from src.parse.node import *
+from src.taxonomy.parse.node import *
 
 
 class NodeVisitor(ABC):

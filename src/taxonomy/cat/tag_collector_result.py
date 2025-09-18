@@ -1,9 +1,9 @@
 from typing import Set
 
-from src.cat.sub_category import SubCategory
+from src.taxonomy.cat.sub_category import SubCategory
 
-from src.cat.tags.sql_tag import SqlTag
-from src.parse.visitor.visitor_result import MergeableVisitorResult
+from src.taxonomy.cat.tags.sql_tag import SqlTag
+from src.taxonomy.parse.visitor.visitor_result import MergeableVisitorResult
 
 
 class TagCollectorResult(MergeableVisitorResult):

@@ -1,7 +1,7 @@
-from src.cat.tag_collector import TagCollector
-from src.cat.tag_collector_result import TagCollectorResult
-from src.cat.tags.sql_tag import OrderedTag
-from src.parse.node import WhereClauseNode, BinOpExpressionNode
+from src.taxonomy.cat.tag_collector import TagCollector
+from src.taxonomy.cat.tag_collector_result import TagCollectorResult
+from src.taxonomy.cat.tags.sql_tag import OrderedTag
+from src.taxonomy.parse.node import WhereClauseNode, BinOpExpressionNode
 
 
 class WhereType(OrderedTag):

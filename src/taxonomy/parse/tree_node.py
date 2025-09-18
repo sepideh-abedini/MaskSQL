@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from graphviz import Digraph
 
-from src.parse.visitor.visitor_result import MergeableVisitorResult
+from src.taxonomy.parse.visitor.visitor_result import MergeableVisitorResult
 
 
 class DiagramTreeNode(MergeableVisitorResult):

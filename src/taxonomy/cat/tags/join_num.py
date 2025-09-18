@@ -1,6 +1,6 @@
-from src.cat.tag_collector import TagCollector
-from src.cat.tags.sql_tag import SqlTag
-from src.parse.node import JoinClauseNode
+from src.taxonomy.cat.tag_collector import TagCollector
+from src.taxonomy.cat.tags.sql_tag import SqlTag
+from src.taxonomy.parse.node import JoinClauseNode
 
 
 class NumJoins(SqlTag):

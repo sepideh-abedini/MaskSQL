@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from enum import auto
 
-from src.cat.tag_collector import TagCollector
-from src.cat.tag_collector_result import TagCollectorResult
-from src.cat.tags.sql_tag import SqlTag
-from src.parse.node import JoinClauseNode, JoinConstraintNode, BinOpExpressionNode
+from src.taxonomy.cat.tag_collector import TagCollector
+from src.taxonomy.cat.tag_collector_result import TagCollectorResult
+from src.taxonomy.cat.tags.sql_tag import SqlTag
+from src.taxonomy.parse.node import JoinClauseNode, JoinConstraintNode, BinOpExpressionNode
 
 
 class JoinSub(SqlTag):

@@ -32,4 +32,5 @@ class LinkSchema(PromptProcessor):
         question = row['question']
         schema_items = row['schema_items']
         value_list = row['values']
+        # slm_sql = row['slm_sql']
         return SCHEMA_LINK_PROMPT_V4.format(schema_items=schema_items, question=question, value_List=value_list)

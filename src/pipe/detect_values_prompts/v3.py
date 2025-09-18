@@ -37,4 +37,5 @@ Output:
 
 Now generate the output list for the following question: 
 Question: {question}
+Schema: {schema_items}
 """

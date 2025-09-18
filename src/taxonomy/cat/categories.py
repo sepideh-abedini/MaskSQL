@@ -1,18 +1,18 @@
 from typing import List, Optional
 
-from src.cat.statement_category import StatementCategory
-from src.cat.sub_category import SubCategory
-from src.cat.tags.complex_keys import ComplexKeywords
-from src.cat.tags.expr_type import ExprType
-from src.cat.tags.extra import ExtraKeywords
-from src.cat.tags.group_cond import GroupType
-from src.cat.tags.join_cond import JoinConditions
-from src.cat.tags.join_tables import JoinTables
-from src.cat.tags.join_type import JoinType, JoinSub
-from src.cat.tags.nest_level import NestLevel
-from src.cat.tags.select_columns import SelectColumns
-from src.cat.tags.structure import StructureType
-from src.cat.tags.where_exprs import WhereType
+from src.taxonomy.cat.statement_category import StatementCategory
+from src.taxonomy.cat.sub_category import SubCategory
+from src.taxonomy.cat.tags.complex_keys import ComplexKeywords
+from src.taxonomy.cat.tags.expr_type import ExprType
+from src.taxonomy.cat.tags.extra import ExtraKeywords
+from src.taxonomy.cat.tags.group_cond import GroupType
+from src.taxonomy.cat.tags.join_cond import JoinConditions
+from src.taxonomy.cat.tags.join_tables import JoinTables
+from src.taxonomy.cat.tags.join_type import JoinType, JoinSub
+from src.taxonomy.cat.tags.nest_level import NestLevel
+from src.taxonomy.cat.tags.select_columns import SelectColumns
+from src.taxonomy.cat.tags.structure import StructureType
+from src.taxonomy.cat.tags.where_exprs import WhereType
 
 CAT_1 = StatementCategory(
     1,

@@ -1,8 +1,9 @@
-from src.cat.categorizer import Categorizer
-from src.cat.tag_extractor import TagExtractor
-from src.parse.parser import SqlParser
 
 from loguru import logger
+
+from src.taxonomy.cat.categorizer import Categorizer
+from src.taxonomy.cat.tag_extractor import TagExtractor
+from src.taxonomy.parse.parser import SqlParser
 
 
 class Catter:

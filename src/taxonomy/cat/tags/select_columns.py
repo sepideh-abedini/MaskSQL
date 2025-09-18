@@ -1,9 +1,9 @@
 from enum import auto
 
-from src.cat.tag_collector import TagCollector
-from src.cat.tag_collector_result import TagCollectorResult
-from src.cat.tags.sql_tag import OrderedTag, SqlTag
-from src.parse.node import SelectClauseNode, TerminalNode, ResultColumnNode, ColumnNode
+from src.taxonomy.cat.tag_collector import TagCollector
+from src.taxonomy.cat.tag_collector_result import TagCollectorResult
+from src.taxonomy.cat.tags.sql_tag import OrderedTag, SqlTag
+from src.taxonomy.parse.node import SelectClauseNode, TerminalNode, ResultColumnNode, ColumnNode
 
 
 class SelectColumns(SqlTag):

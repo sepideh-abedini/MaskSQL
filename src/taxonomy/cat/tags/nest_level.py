@@ -1,8 +1,8 @@
-from src.cat.tag_collector import TagCollector
-from src.cat.tag_collector_result import TagCollectorResult
-from src.cat.tags.sql_tag import SqlTag
-from src.cat.tags.structure import StructureType
-from src.parse.node import SelectStatementNode
+from src.taxonomy.cat.tag_collector import TagCollector
+from src.taxonomy.cat.tag_collector_result import TagCollectorResult
+from src.taxonomy.cat.tags.sql_tag import SqlTag
+from src.taxonomy.cat.tags.structure import StructureType
+from src.taxonomy.parse.node import SelectStatementNode
 
 
 class NestLevel(SqlTag):

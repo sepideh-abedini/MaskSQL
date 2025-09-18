@@ -4,7 +4,7 @@ from typing import Optional, Union, Tuple, List, Set, Dict
 
 from loguru import logger
 
-from src.parse.database_schema import DatabaseSchemaSqlyzr
+from src.taxonomy.parse.database_schema import DatabaseSchemaSqlyzr
 
 
 class SqlAstNode(ABC):

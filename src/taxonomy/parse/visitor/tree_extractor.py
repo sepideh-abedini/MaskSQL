@@ -1,9 +1,9 @@
 from typing import Any
 
-from src.parse.node import TerminalNode, SelectStatementNode, \
+from src.taxonomy.parse.node import TerminalNode, SelectStatementNode, \
     JoinClauseNode, SqlAstNode
-from src.parse.tree_node import DiagramTreeNode
-from src.parse.visitor.collector_visitor import CollectorVisitor
+from src.taxonomy.parse.tree_node import DiagramTreeNode
+from src.taxonomy.parse.visitor.collector_visitor import CollectorVisitor
 from src.util.str_utils import split_pascal
 
 

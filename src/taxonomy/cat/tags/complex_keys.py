@@ -1,9 +1,9 @@
 from enum import auto
 
-from src.cat.tag_collector import TagCollector
-from src.cat.tag_collector_result import TagCollectorResult
-from src.cat.tags.sql_tag import SqlTag
-from src.parse.node import WithClauseNode, WindowExpressionNode, FunctionExpressionNode
+from src.taxonomy.cat.tag_collector import TagCollector
+from src.taxonomy.cat.tag_collector_result import TagCollectorResult
+from src.taxonomy.cat.tags.sql_tag import SqlTag
+from src.taxonomy.parse.node import WithClauseNode, WindowExpressionNode, FunctionExpressionNode
 
 
 class ComplexKeywords(SqlTag):
