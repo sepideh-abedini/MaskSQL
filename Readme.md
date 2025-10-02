@@ -94,3 +94,9 @@ Then you can run MaskSQL pipline as follows:
 ```shell
 python main.py --resd
 ```
+
+MaskSQL saves the intermediate results to files for later user.
+So, in order to run the pipeline from scratch you need to clean the data directory:
+```shell
+./clean.sh data
+```

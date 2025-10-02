@@ -41,12 +41,12 @@ class CalcExecAcc(JsonListTransformer):
             print(e)
             raise e
 
-    def _post_run(self):
-        self.failures(self.failures_arr)
-
-    def failures(self, arr):
-        path= f"data/{self.policy}/EA_failures.json"
-        write_json(path,arr)
+    # def _post_run(self):
+    #     self.failures(self.failures_arr)
+    #
+    # def failures(self, arr):
+    #     path= f"data/{self.policy}/EA_failures.json"
+    #     write_json(path,arr)
 
 
 
